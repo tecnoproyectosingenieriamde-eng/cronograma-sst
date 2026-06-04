@@ -88,7 +88,7 @@
                 </div>
             </div>
 
-            <div class="bg-white p-4 rounded-xl shadow-xs border border-gray-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="bg-white p-4 rounded-xl shadow-xs border border-gray-200 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div class="flex flex-wrap gap-2" id="filterContainer">
                     <button data-filter="Todos" class="filter-btn px-4 py-2 text-sm font-semibold rounded-lg bg-brand-blue text-white shadow-xs transition-colors cursor-pointer">Todos</button>
                     <button data-filter="Planear" class="filter-btn px-4 py-2 text-sm font-semibold rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors cursor-pointer">Planear (Jun)</button>
@@ -98,10 +98,25 @@
                 </div>
 
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                    <div class="relative sm:w-48">
+                        <i class="fas fa-sort absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <select id="selSort" class="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-950 bg-white font-medium text-gray-700">
+                            <option value="id">Ordenar por: ID</option>
+                            <option value="inicio">Ordenar por: Fecha Inicio</option>
+                            <option value="fin">Ordenar por: Fecha Fin</option>
+                            <option value="avance">Ordenar por: % Avance</option>
+                        </select>
+                    </div>
                     <div class="relative flex-1 sm:w-64">
                         <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
                         <input type="text" id="txtSearch" placeholder="Buscar estándar o actividad..." class="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-950">
                     </div>
+                    
+                    <!-- NUEVO: Botón Insertar Actividad -->
+                    <button id="btnOpenAddModal" class="inline-flex items-center justify-center gap-2 bg-blue-900 hover:bg-blue-950 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-xs transition-colors cursor-pointer">
+                        <i class="fas fa-plus"></i> Nueva Actividad
+                    </button>
+                    
                     <button id="btnDownloadCSV" class="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-xs transition-colors cursor-pointer">
                         <i class="fas fa-file-csv text-base"></i> Informe de la Semana
                     </button>
@@ -140,6 +155,7 @@
         </div>
     </footer>
 
+    <!-- MODAL DE COMENTARIOS -->
     <div id="commentsModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 backdrop-blur-xs">
         <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden">
             <div class="p-5 bg-brand-blue text-white flex items-center justify-between">
@@ -163,6 +179,7 @@
         </div>
     </div>
 
+    <!-- MODAL PARA EDICIÓN DE ACTIVIDADES -->
     <div id="editModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 backdrop-blur-xs">
         <div class="bg-white rounded-xl shadow-xl max-w-md w-full overflow-hidden">
             <div class="p-5 bg-slate-800 text-white flex items-center justify-between">
@@ -201,10 +218,54 @@
         </div>
     </div>
 
+    <!-- NUEVO: MODAL PARA AGREGAR NUEVA ACTIVIDAD -->
+    <div id="addModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 backdrop-blur-xs">
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full overflow-hidden">
+            <div class="p-5 bg-blue-950 text-white flex items-center justify-between">
+                <h3 class="text-base font-bold"><i class="fas fa-folder-plus mr-2"></i> Crear Nueva Actividad</h3>
+                <button onclick="closeAddModal()" class="text-white/80 hover:text-white text-xl cursor-pointer"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="p-6 space-y-4 bg-gray-50">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Código Único / ID (Ej: P011, CUSTOM01)</label>
+                    <input type="text" id="txtAddId" placeholder="Ej: P011" class="w-full p-2.5 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-950 font-mono uppercase">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nombre del Estándar / Actividad</label>
+                    <textarea id="txtAddName" rows="3" placeholder="Escribe la descripción completa aquí..." class="w-full p-2.5 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-950"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Ciclo PHVA</label>
+                    <select id="selAddCiclo" class="w-full p-2.5 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-950 font-medium">
+                        <option value="Planear">Planear (Junio)</option>
+                        <option value="Hacer">Hacer (Julio - Agosto)</option>
+                        <option value="Verificar">Verificar (Septiembre 1-15)</option>
+                        <option value="Actuar">Actuar (Septiembre 16-30)</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Fecha Inicio</label>
+                        <input type="date" id="txtAddInicio" class="w-full p-2.5 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-950">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Fecha Fin</label>
+                        <input type="date" id="txtAddFin" class="w-full p-2.5 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-950">
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 bg-white border-t border-gray-200 flex justify-end gap-3">
+                <button onclick="closeAddModal()" class="px-4 py-2 text-sm font-semibold text-gray-500 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer">Cancelar</button>
+                <button id="btnSaveAdd" class="px-4 py-2 text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg shadow-xs transition-colors cursor-pointer">Crear Actividad</button>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, collection, query, onSnapshot, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+        // MODIFICADO: Agregado deleteDoc para la función de eliminar
+        import { getFirestore, doc, setDoc, deleteDoc, collection, query, onSnapshot, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyD0WHi2S8S0J3xbLo5jxF7nf9HiCS3Tpg8",
@@ -255,6 +316,7 @@
             user: null,
             filter: "Todos",
             search: "",
+            sortBy: "id",
             tareas: [],
             avances: {},
             comentarios: [],
@@ -270,8 +332,10 @@
         const tasksTableBody = document.getElementById("tasksTableBody");
         const emptyState = document.getElementById("emptyState");
         const txtSearch = document.getElementById("txtSearch");
+        const selSort = document.getElementById("selSort");
         const filterContainer = document.getElementById("filterContainer");
         const btnDownloadCSV = document.getElementById("btnDownloadCSV");
+        const btnOpenAddModal = document.getElementById("btnOpenAddModal");
 
         const commentsModal = document.getElementById("commentsModal");
         const modalTaskCycle = document.getElementById("modalTaskCycle");
@@ -288,6 +352,15 @@
         const txtEditInicio = document.getElementById("txtEditInicio");
         const txtEditFin = document.getElementById("txtEditFin");
         const btnSaveEdit = document.getElementById("btnSaveEdit");
+
+        // NUEVO: Referencias del Modal de Creación
+        const addModal = document.getElementById("addModal");
+        const txtAddId = document.getElementById("txtAddId");
+        const txtAddName = document.getElementById("txtAddName");
+        const selAddCiclo = document.getElementById("selAddCiclo");
+        const txtAddInicio = document.getElementById("txtAddInicio");
+        const txtAddFin = document.getElementById("txtAddFin");
+        const btnSaveAdd = document.getElementById("btnSaveAdd");
 
         const statGlobalProgress = document.getElementById("statGlobalProgress");
         const statTotalTasks = document.getElementById("statTotalTasks");
@@ -332,10 +405,8 @@
         }
 
         function startRealtimeSync() {
-            // Sincronizar Estructura de Tareas
             onSnapshot(collection(db, "tareas_sst"), (snapshot) => {
                 if (snapshot.empty) {
-                    // Sembrar datos por primera vez de forma automática
                     sgsstTasksTemplate.forEach(async (task) => {
                         await setDoc(doc(db, "tareas_sst", task.id), task);
                     });
@@ -343,13 +414,10 @@
                 }
                 let listaTareas = [];
                 snapshot.forEach(doc => listaTareas.push(doc.data()));
-                
-                // Ordenar tareas por código de ID de forma natural
-                appState.tareas = listaTareas.sort((a,b) => a.id.localeCompare(b.id, undefined, {numeric: true}));
+                appState.tareas = listaTareas;
                 updateMetricsAndTable();
             });
 
-            // Sincronizar Avances
             onSnapshot(collection(db, "avances_sst"), (snapshot) => {
                 let nuevosAvances = {};
                 snapshot.forEach(doc => nuevosAvances[doc.id] = doc.data().avance);
@@ -357,7 +425,6 @@
                 updateMetricsAndTable();
             });
 
-            // Sincronizar Comentarios
             onSnapshot(query(collection(db, "comentarios_sst"), orderBy("createdAt", "asc")), (snapshot) => {
                 let nuevosComentarios = [];
                 snapshot.forEach(doc => nuevosComentarios.push({ id: doc.id, ...doc.data() }));
@@ -368,7 +435,14 @@
         }
 
         function updateMetricsAndTable() {
-            if (appState.tareas.length === 0) return;
+            if (appState.tareas.length === 0) {
+                tasksTableBody.innerHTML = "";
+                emptyState.classList.remove("hidden");
+                statGlobalProgress.innerText = "0%";
+                statTotalTasks.innerText = "0";
+                statPendingTasks.innerText = "0";
+                return;
+            }
 
             let filtered = appState.tareas.filter(task => {
                 const matchFilter = appState.filter === "Todos" || task.ciclo === appState.filter;
@@ -376,7 +450,20 @@
                 return matchFilter && matchSearch;
             });
 
-            // Renderizar Filas de la Tabla
+            filtered.sort((a, b) => {
+                if (appState.sortBy === "inicio") {
+                    return a.inicio.localeCompare(b.inicio);
+                } else if (appState.sortBy === "fin") {
+                    return a.fin.localeCompare(b.fin);
+                } else if (appState.sortBy === "avance") {
+                    const avanceA = appState.avances[a.id] || 0;
+                    const avanceB = appState.avances[b.id] || 0;
+                    return avanceA - avanceB;
+                } else {
+                    return a.id.localeCompare(b.id, undefined, {numeric: true});
+                }
+            });
+
             tasksTableBody.innerHTML = "";
             if (filtered.length === 0) {
                 emptyState.classList.remove("hidden");
@@ -410,12 +497,16 @@
                             </div>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <div class="flex items-center justify-center gap-2">
-                                <button onclick="window.openCommentsModal('${task.id}')" class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer">
+                            <div class="flex items-center justify-center gap-1.5">
+                                <button onclick="window.openCommentsModal('${task.id}')" class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-600 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer" title="Comentarios y Evidencias">
                                     <i class="fas fa-comments"></i> <span>${commentCount}</span>
                                 </button>
                                 <button onclick="window.openEditModal('${task.id}')" class="bg-slate-100 hover:bg-slate-200 text-slate-600 p-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer" title="Editar Actividad">
-                                    <i class="fas fa-edit text-sm"></i>
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <!-- NUEVO: Botón de Eliminación -->
+                                <button onclick="window.deleteTask('${task.id}')" class="bg-red-50 hover:bg-red-100 text-red-600 p-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer" title="Eliminar de forma permanente">
+                                    <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
                         </td>
@@ -424,7 +515,6 @@
                 });
             }
 
-            // Calcular Métricas Globales
             let totalTasks = appState.tareas.length;
             let sumAvance = 0;
             let pendingCount = 0;
@@ -440,7 +530,7 @@
             statPendingTasks.innerText = pendingCount;
         }
 
-        // FUNCIONES GLOBALES CONECTADAS AL WINDOW (Para interactuar desde HTML puro)
+        // FUNCIONES GLOBALES CONECTADAS AL WINDOW
         window.changeAvance = async (taskId, value) => {
             await setDoc(doc(db, "avances_sst", taskId), { avance: parseInt(value), updatedBy: appState.user.email, updatedAt: serverTimestamp() });
         };
@@ -477,6 +567,57 @@
             appState.activeEditTaskId = null;
         };
 
+        // NUEVO: Funciones para manejar Modal de Inserción
+        btnOpenAddModal.addEventListener("click", () => {
+            txtAddId.value = "";
+            txtAddName.value = "";
+            txtAddInicio.value = "2026-06-01";
+            txtAddFin.value = "2026-06-30";
+            addModal.classList.remove("hidden");
+        });
+
+        window.closeAddModal = () => {
+            addModal.classList.add("hidden");
+        };
+
+        // NUEVO: Guardar inserción en base de datos
+        btnSaveAdd.addEventListener("click", async () => {
+            const id = txtAddId.value.trim().toUpperCase();
+            const name = txtAddName.value.trim();
+            const ciclo = selAddCiclo.value;
+            const inicio = txtAddInicio.value;
+            const fin = txtAddFin.value;
+
+            if (!id || !name || !inicio || !fin) {
+                return alert("Por favor complete todos los campos del formulario.");
+            }
+
+            // Validar si el ID ya existe para no sobreescribir por error
+            const existe = appState.tareas.some(t => t.id === id);
+            if (existe) {
+                return alert(`El Código/ID "${id}" ya está en uso por otra actividad. Asigne uno diferente.`);
+            }
+
+            const newTask = { id, name, ciclo, inicio, fin };
+            await setDoc(doc(db, "tareas_sst", id), newTask);
+            window.closeAddModal();
+        });
+
+        // NUEVO: Función para eliminar actividad en tiempo real
+        window.deleteTask = async (taskId) => {
+            const confirmacion = confirm(`¿Está completamente seguro de eliminar permanentemente la actividad [${taskId}]? Esta acción afectará el tablero de todo el equipo.`);
+            if (!confirmacion) return;
+
+            try {
+                // Elimina el documento de la colección principal
+                await deleteDoc(doc(db, "tareas_sst", taskId));
+                // Opcional: Limpia el registro de avance asignado a ese ID
+                await deleteDoc(doc(db, "avances_sst", taskId));
+            } catch (error) {
+                alert("Error al intentar eliminar de la base de datos: " + error.message);
+            }
+        };
+
         btnSaveEdit.addEventListener("click", async () => {
             if (!appState.activeEditTaskId) return;
             const updatedTask = {
@@ -501,9 +642,7 @@
                 return;
             }
 
-            // Separar principales de respuestas hilos
             const parents = currentComments.filter(c => !c.parentId);
-            
             parents.forEach(p => {
                 const itemDiv = document.createElement("div");
                 itemDiv.className = "bg-white p-4 rounded-xl shadow-xs border border-gray-100 space-y-3";
@@ -523,7 +662,6 @@
                 `;
                 modalCommentsBody.appendChild(itemDiv);
 
-                // Agregar respuestas del hijo
                 const replies = currentComments.filter(c => c.parentId === p.id);
                 const replyContainer = itemDiv.querySelector(`#replies-${p.id}`);
                 replies.forEach(r => {
@@ -573,7 +711,7 @@
             await setDoc(docRef, newComment);
         });
 
-        // FILTROS Y BÚSQUEDA
+        // FILTROS, BÚSQUEDA Y ORDENAMIENTO
         filterContainer.addEventListener("click", (e) => {
             const btn = e.target.closest(".filter-btn");
             if (!btn) return;
@@ -585,6 +723,11 @@
 
         txtSearch.addEventListener("input", (e) => {
             appState.search = e.target.value;
+            updateMetricsAndTable();
+        });
+
+        selSort.addEventListener("change", (e) => {
+            appState.sortBy = e.target.value;
             updateMetricsAndTable();
         });
 
