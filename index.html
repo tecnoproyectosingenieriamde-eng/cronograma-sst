@@ -356,23 +356,28 @@ const firebaseConfig = {
             btnGoogleLogin.innerHTML = `<i class="fas fa-lock"></i> Llaves de Firebase Requeridas`;
         } else {
             // Detectar estado de autenticación de Firebase Auth
-            onAuthStateChanged(auth, (user) => {
-                document.getElementById("authLoading").classList.add("hidden");
-                if (user) {
-                    appState.user = user;
-                    renderUserProfile(user);
-                    loggedOutView.classList.add("hidden");
-                    loggedInView.classList.remove("hidden");
-                    
-                    // Iniciar oyentes en tiempo real desde Firestore
-                    startRealtimeSync();
-                } else {
-                    appState.user = null;
-                    authSection.innerHTML = "";
-                    loggedOutView.classList.remove("hidden");
-                    loggedInView.classList.add("hidden");
-                }
-            });
+onAuthStateChanged(auth, (user) => {
+    // Corrección: Solo oculta el cargador si realmente existe en la pantalla
+    const loader = document.getElementById("authLoading");
+    if (loader) {
+        loader.classList.add("hidden");
+    }
+    
+    if (user) {
+        appState.user = user;
+        renderUserProfile(user);
+        loggedOutView.classList.add("hidden");
+        loggedInView.classList.remove("hidden");
+        
+        // Iniciar oyentes en tiempo real desde Firestore
+        startRealtimeSync();
+    } else {
+        appState.user = null;
+        authSection.innerHTML = "";
+        loggedOutView.classList.remove("hidden");
+        loggedInView.classList.add("hidden");
+    }
+});
 
             // Trigger Login
             btnGoogleLogin.addEventListener("click", () => {
