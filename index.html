@@ -7,11 +7,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Estilos personalizados adicionales para complementar Tailwind */
         .brand-blue { color: #1e3a8a; }
         .bg-brand-blue { background-color: #1e3a8a; }
         .bg-brand-blue:hover { background-color: #172554; }
-        /* Animación de carga */
         .spinner {
             border: 4px solid rgba(0, 0, 0, 0.1);
             width: 36px;
@@ -30,7 +28,7 @@
             <div class="flex items-center gap-4">
                 <img src="https://static.wixstatic.com/media/d0ce54_5945f241b1534afeb1a98e9e645f4482~mv2.jpg" 
                      alt="Logo TECNOPROYECTOS INGENIERÍA S.A.S." 
-                     class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md hover:scale-105 transition-transform duration-200">
+                     class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md">
                 <div>
                     <h1 class="text-lg font-bold text-gray-900 tracking-tight flex items-center gap-2">
                         TECNOPROYECTOS INGENIERÍA S.A.S. 
@@ -39,10 +37,9 @@
                     <p class="text-xs sm:text-sm text-gray-500 font-medium">Sistema de Gestión de Seguridad y Salud en el Trabajo (SG-SST)</p>
                 </div>
             </div>
-
             <div id="authSection" class="flex items-center gap-3">
                 <div id="authLoading" class="spinner border-2 w-6 h-6"></div>
-                </div>
+            </div>
         </div>
     </header>
 
@@ -124,8 +121,7 @@
                                 <th class="px-6 py-4 text-center">Interacciones</th>
                             </tr>
                         </thead>
-                        <tbody id="tasksTableBody" class="divide-y divide-gray-100 text-sm text-gray-700">
-                            </tbody>
+                        <tbody id="tasksTableBody" class="divide-y divide-gray-100 text-sm text-gray-700"></tbody>
                     </table>
                 </div>
                 <div id="emptyState" class="hidden text-center py-12 text-gray-400">
@@ -134,67 +130,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="mt-12 bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden">
-            <button onclick="toggleInstructions()" class="w-full bg-gray-100 px-6 py-4 flex items-center justify-between text-left font-bold text-gray-800 hover:bg-gray-150 transition-colors cursor-pointer">
-                <span class="flex items-center gap-2 text-blue-900"><i class="fas fa-cogs"></i> GUÍA EXCLUSIVA: Configuración de Firebase y Despliegue en GitHub Pages</span>
-                <i id="instructionChevron" class="fas fa-chevron-down transition-transform"></i>
-            </button>
-            <div id="instructionsPanel" class="hidden p-6 border-t border-gray-200 space-y-6 text-sm text-gray-600 bg-gray-50/50">
-                
-                <div>
-                    <h4 class="font-bold text-gray-900 flex items-center gap-2 mb-2 text-base"><span class="bg-blue-900 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-xs">1</span> Crear Proyecto en Firebase (Plan Spark Gratuito)</h4>
-                    <ol class="list-decimal pl-5 space-y-1">
-                        <li>Ingresa a <a href="https://console.firebase.google.com/" target="_blank" class="text-blue-600 underline font-semibold">Firebase Console</a> con tu cuenta de Google.</li>
-                        <li>Haz clic en <strong>Agregar proyecto</strong>. Nómbralo <code>tecnoproyectos-sgsst</code> y continúa (puedes desactivar Google Analytics para agilizar).</li>
-                        <li>En el panel lateral izquierdo, ve a <strong>Build (Compilación)</strong> &gt; <strong>Authentication</strong>. Haz clic en <strong>Comenzar</strong>, selecciona el proveedor <strong>Google</strong>, habilítalo, introduce el correo de soporte del proyecto y presiona <strong>Guardar</strong>.</li>
-                        <li>Ve a <strong>Build (Compilación)</strong> &gt; <strong>Firestore Database</strong>. Haz clic en <strong>Crear base de datos</strong>.</li>
-                        <li>Selecciona la ubicación de tu servidor y elige <strong>Comenzar en modo de prueba</strong> (esto habilitará los permisos de lectura/escritura inmediatamente). Haz clic en <strong>Crear</strong>.</li>
-                    </ol>
-                </div>
-
-                <div>
-                    <h4 class="font-bold text-gray-900 flex items-center gap-2 mb-2 text-base"><span class="bg-blue-900 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-xs">2</span> Vincular las Credenciales de Firebase al Código</h4>
-                    <ol class="list-decimal pl-5 space-y-1">
-                        <li>En la página principal de tu consola de Firebase, haz clic en el icono de engranaje (Configuración del proyecto) al lado de "Descripción general del proyecto".</li>
-                        <li>En la parte inferior de la pestaña <em>General</em>, haz clic en el icono de Web <code>&lt;/&gt;</code> para registrar una aplicación. Nómbrala <code>sst-web</code> y haz clic en <strong>Registrar app</strong>.</li>
-                        <li>Copia el objeto de configuración generado (<code>firebaseConfig</code>) que luce similar a esto:
-                            <pre class="bg-gray-800 text-gray-200 p-3 rounded-lg text-xs font-mono my-2 overflow-x-auto">
-const firebaseConfig = {
-  apiKey: "AIzaSy...",
-  authDomain: "...",
-  projectId: "...",
-  storageBucket: "...",
-  messagingSenderId: "...",
-  appId: "..."
-};</pre>
-                        </li>
-                        <li>Abre este archivo <code>index.html</code> en un editor de texto bloc de notas o VS Code, busca la línea que dice <code>const firebaseConfig = { ... }</code> (línea ~190) y reemplázala por tus claves reales. ¡Guarda el archivo!</li>
-                    </ol>
-                </div>
-
-                <div>
-                    <h4 class="font-bold text-gray-900 flex items-center gap-2 mb-2 text-base"><span class="bg-blue-900 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-xs">3</span> Despliegue Gratuito en GitHub Pages</h4>
-                    <ol class="list-decimal pl-5 space-y-1">
-                        <li>Crea una cuenta gratuita en <a href="https://github.com" target="_blank" class="text-blue-600 underline font-semibold">GitHub</a> si aún no tienes una.</li>
-                        <li>Haz clic en el botón <strong>New</strong> (Nuevo repositorio). Ponle de nombre <code>cronograma-sst</code>, elígelo como <strong>Público</strong> y haz clic en <strong>Create repository</strong>.</li>
-                        <li>En la pantalla que aparece, haz clic en el enlace que dice <strong>"uploading an existing file"</strong> (subir un archivo existente).</li>
-                        <li>Arrastra tu archivo <code>index.html</code> (ya editado con tus credenciales de Firebase), espera que cargue y haz clic en <strong>Commit changes</strong> (Confirmar cambios).</li>
-                        <li>Dentro de tu repositorio de GitHub, dirígete a la pestaña de <strong>Settings</strong> (Configuración) en el menú superior.</li>
-                        <li>En el menú lateral izquierdo, busca la sección <strong>Pages</strong>.</li>
-                        <li>Bajo <em>Build and deployment</em>, cambia la rama (Branch) de <code>None</code> a <code>main</code> (o <code>master</code>) y haz clic en <strong>Save</strong>.</li>
-                        <li>Espera de 1 a 2 minutos, recarga la página y verás una barra superior verde que te indicará la URL pública de tu aplicación en internet (ej. <code>https://tu-usuario.github.io/cronograma-sst/</code>).</li>
-                    </ol>
-                </div>
-
-                <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg">
-                    <p class="font-bold text-amber-900 flex items-center gap-2"><i class="fas fa-exclamation-triangle"></i> ¡PASO OBLIGATORIO FINAL!</p>
-                    <p class="text-xs text-amber-800 mt-1">Para que el inicio de sesión funcione en la URL de GitHub Pages, debes volver a <strong>Firebase Console &gt; Authentication &gt; pestaña "Dominios autorizados"</strong> (abajo del todo), hacer clic en <strong>Agregar dominio</strong> e ingresar el dominio de tu GitHub Pages sin el "https://" ni subpáginas (ejemplo: <code>tu-usuario.github.io</code>). De lo contrario, Google bloqueará el login.</p>
-                </div>
-
-            </div>
-        </div>
-
     </main>
 
     <footer class="bg-white border-t border-gray-200 py-6 text-center text-xs text-gray-400 mt-12">
@@ -206,7 +141,7 @@ const firebaseConfig = {
     </footer>
 
     <div id="commentsModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 backdrop-blur-xs">
-        <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+        <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden">
             <div class="p-5 bg-brand-blue text-white flex items-center justify-between">
                 <div>
                     <span id="modalTaskCycle" class="text-[10px] font-bold uppercase bg-white/20 text-white px-2 py-0.5 rounded">Ciclo</span>
@@ -214,15 +149,11 @@ const firebaseConfig = {
                 </div>
                 <button onclick="closeCommentsModal()" class="text-white/80 hover:text-white text-xl cursor-pointer p-1"><i class="fas fa-times"></i></button>
             </div>
-
-            <div id="modalCommentsBody" class="p-6 overflow-y-auto space-y-4 flex-1 bg-gray-50">
-                </div>
-
+            <div id="modalCommentsBody" class="p-6 overflow-y-auto space-y-4 flex-1 bg-gray-50"></div>
             <div id="replyIndicator" class="hidden bg-blue-50 border-t border-blue-200 px-6 py-2 flex items-center justify-between text-xs text-blue-900 font-medium">
                 <span id="replyIndicatorText"><i class="fas fa-reply"></i> Respondiendo a un comentario...</span>
                 <button onclick="cancelReplyMode()" class="text-red-500 hover:underline cursor-pointer">Cancelar</button>
             </div>
-
             <div class="p-4 bg-white border-t border-gray-200 flex items-center gap-3">
                 <input type="text" id="txtNewComment" placeholder="Escribe un comentario o aclaración técnica..." class="flex-1 px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-950">
                 <button id="btnSendComment" class="bg-brand-blue text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-xs hover:bg-opacity-90 transition-colors cursor-pointer flex items-center gap-2">
@@ -232,16 +163,49 @@ const firebaseConfig = {
         </div>
     </div>
 
+    <div id="editModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 backdrop-blur-xs">
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full overflow-hidden">
+            <div class="p-5 bg-slate-800 text-white flex items-center justify-between">
+                <h3 class="text-base font-bold"><i class="fas fa-edit mr-2"></i> Editar Actividad / Estándar</h3>
+                <button onclick="closeEditModal()" class="text-white/80 hover:text-white text-xl cursor-pointer"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="p-6 space-y-4 bg-gray-50">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nombre del Estándar / Actividad</label>
+                    <textarea id="txtEditName" rows="3" class="w-full p-2.5 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-950"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Ciclo PHVA</label>
+                    <select id="selEditCiclo" class="w-full p-2.5 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-950">
+                        <option value="Planear">Planear (Junio)</option>
+                        <option value="Hacer">Hacer (Julio - Agosto)</option>
+                        <option value="Verificar">Verificar (Septiembre 1-15)</option>
+                        <option value="Actuar">Actuar (Septiembre 16-30)</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Fecha Inicio</label>
+                        <input type="date" id="txtEditInicio" class="w-full p-2.5 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-950">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Fecha Fin</label>
+                        <input type="date" id="txtEditFin" class="w-full p-2.5 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-950">
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 bg-white border-t border-gray-200 flex justify-end gap-3">
+                <button onclick="closeEditModal()" class="px-4 py-2 text-sm font-semibold text-gray-500 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer">Cancelar</button>
+                <button id="btnSaveEdit" class="px-4 py-2 text-sm font-semibold bg-brand-blue text-white rounded-lg shadow-xs hover:bg-opacity-90 transition-colors cursor-pointer">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
 
     <script type="module">
-        // Importación de módulos SDK Web de Firebase desde CDN Oficial
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, addDoc, collection, query, onSnapshot, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, collection, query, onSnapshot, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-        // =========================================================================
-        // CONFIGURACIÓN DE FIREBASE (Reemplazar con tus credenciales del paso 2)
-        // =========================================================================
         const firebaseConfig = {
             apiKey: "AIzaSyD0WHi2S8S0J3xbLo5jxF7nf9HiCS3Tpg8",
             authDomain: "tecnoproyectos-sst.firebaseapp.com",
@@ -251,24 +215,12 @@ const firebaseConfig = {
             appId: "1:142493397786:web:03cb8f7746e6c82e1032a3"
         };
 
-        // Inicializar servicios si las claves fueron reemplazadas
-        let app, auth, db, googleProvider;
-        let isFirebaseConfigured = false;
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const googleProvider = new GoogleAuthProvider();
 
-        if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("REEMPLAZA_CON")) {
-            app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-            db = getFirestore(app);
-            googleProvider = new GoogleAuthProvider();
-            isFirebaseConfigured = true;
-        }
-
-        // =========================================================================
-        // BANCO DE DATOS: MATRIZ DE LOS 60 ESTÁNDARES ADAPTADOS (CRONOGRAMA 2026)
-        // Agrupados estratégicamente entre el 1 de junio y el 30 de septiembre de 2026
-        // =========================================================================
         const sgsstTasksTemplate = [
-            // CICLO PLANEAR (Junio 2026)
             { id: "P001", ciclo: "Planear", name: "E1.1.1 Asignación de profesional especialista en SST y licencia vigente", inicio: "2026-06-01", fin: "2026-06-07" },
             { id: "P002", ciclo: "Planear", name: "E1.1.3 Asignación de presupuesto financiero para actividades de SST", inicio: "2026-06-04", fin: "2026-06-12" },
             { id: "P003", ciclo: "Planear", name: "E1.1.4 Afiliación obligatoria al Sistema de Seguridad Social Integral", inicio: "2026-06-01", fin: "2026-06-05" },
@@ -279,8 +231,6 @@ const firebaseConfig = {
             { id: "P008", ciclo: "Planear", name: "E2.2.1 Definición de los Objetivos del SG-SST medibles y alineados", inicio: "2026-06-22", fin: "2026-06-26" },
             { id: "P009", ciclo: "Planear", name: "E2.3.1 Ejecución de la Evaluación Inicial del SG-SST (Diagnóstico)", inicio: "2026-06-01", fin: "2026-06-10" },
             { id: "P010", ciclo: "Planear", name: "E2.4.1 Estructuración y validación del Plan Anual de Trabajo con firmas", inicio: "2026-06-25", fin: "2026-06-30" },
-
-            // CICLO HACER (Julio - Agosto 2026)
             { id: "H011", ciclo: "Hacer", name: "E3.1.1 Establecimiento del sistema de archivo y retención documental", inicio: "2026-07-01", fin: "2026-07-08" },
             { id: "H012", ciclo: "Hacer", name: "E3.2.1 Elaboración y actualización de la Matriz de Requisitos Legales", inicio: "2026-07-05", fin: "2026-07-15" },
             { id: "H013", ciclo: "Hacer", name: "E4.1.1 Realización de Evaluaciones Médicas Ocupacionales de ingreso/periódicas", inicio: "2026-07-10", fin: "2026-07-31" },
@@ -293,30 +243,26 @@ const firebaseConfig = {
             { id: "H020", ciclo: "Hacer", name: "E7.2.1 Mantenimiento preventivo de maquinaria, vehículos y equipos técnicos", inicio: "2026-08-18", fin: "2026-08-29" },
             { id: "H021", ciclo: "Hacer", name: "E7.3.1 Suministro y entrega registrada de Elementos de Protección Personal (EPP)", inicio: "2026-07-25", fin: "2026-07-30" },
             { id: "H022", ciclo: "Hacer", name: "E7.4.1 Manual y lineamientos para la selección y evaluación de proveedores y contratistas", inicio: "2026-08-22", fin: "2026-08-31" },
-
-            // CICLO VERIFICAR (Septiembre 1 al 15, 2026)
             { id: "V023", ciclo: "Verificar", name: "E8.1.1 Formulación y cálculo técnico de los Fórmulas e Indicadores de SST", inicio: "2026-09-01", fin: "2026-09-07" },
             { id: "V024", ciclo: "Verificar", name: "E8.2.1 Ejecución y acta de la Auditoría Interna Anual obligatoria", inicio: "2026-09-05", fin: "2026-09-12" },
             { id: "V025", ciclo: "Verificar", name: "E8.3.1 Desarrollo de la Revisión General por la Alta Dirección", inicio: "2026-09-10", fin: "2026-09-14" },
             { id: "V026", ciclo: "Verificar", name: "E8.4.1 Procedimiento de Investigación de Incidentes y Accidentes de Trabajo", inicio: "2026-09-01", fin: "2026-09-15" },
-
-            // CICLO ACTUAR (Septiembre 16 al 30, 2026)
             { id: "A027", ciclo: "Actuar", name: "E9.1.1 Despliegue de Acciones Preventivas y Correctivas de hallazgos", inicio: "2026-09-16", fin: "2026-09-24" },
             { id: "A028", ciclo: "Actuar", name: "E9.2.1 Formulación del Plan de Mejoramiento Continuo y metas para ciclo 2027", inicio: "2026-09-22", fin: "2026-09-30" }
         ];
 
-        // ESTADO GLOBAL DE LA APLICACIÓN
         let appState = {
             user: null,
             filter: "Todos",
             search: "",
-            avances: {},       // Mapeo id: porcentaje entero
-            comentarios: [],   // Lista completa traída de DB
+            tareas: [],
+            avances: {},
+            comentarios: [],
             activeTaskId: null,
-            activeReplyParentId: null // Modo responder comentario
+            activeReplyParentId: null,
+            activeEditTaskId: null
         };
 
-        // ENLACES A ELEMENTOS DEL DOM
         const authSection = document.getElementById("authSection");
         const loggedOutView = document.getElementById("loggedOutView");
         const loggedInView = document.getElementById("loggedInView");
@@ -327,7 +273,6 @@ const firebaseConfig = {
         const filterContainer = document.getElementById("filterContainer");
         const btnDownloadCSV = document.getElementById("btnDownloadCSV");
 
-        // Elementos del Modal de comentarios
         const commentsModal = document.getElementById("commentsModal");
         const modalTaskCycle = document.getElementById("modalTaskCycle");
         const modalTaskName = document.getElementById("modalTaskName");
@@ -337,55 +282,38 @@ const firebaseConfig = {
         const replyIndicator = document.getElementById("replyIndicator");
         const replyIndicatorText = document.getElementById("replyIndicatorText");
 
-        // Métricas
+        const editModal = document.getElementById("editModal");
+        const txtEditName = document.getElementById("txtEditName");
+        const selEditCiclo = document.getElementById("selEditCiclo");
+        const txtEditInicio = document.getElementById("txtEditInicio");
+        const txtEditFin = document.getElementById("txtEditFin");
+        const btnSaveEdit = document.getElementById("btnSaveEdit");
+
         const statGlobalProgress = document.getElementById("statGlobalProgress");
         const statTotalTasks = document.getElementById("statTotalTasks");
         const statPendingTasks = document.getElementById("statPendingTasks");
 
-        // =========================================================================
-        // LOGICA DE FLUJO DE USUARIO / AUTENTICACIÓN
-        // =========================================================================
+        onAuthStateChanged(auth, (user) => {
+            const loader = document.getElementById("authLoading");
+            if (loader) loader.classList.add("hidden");
+            
+            if (user) {
+                appState.user = user;
+                renderUserProfile(user);
+                loggedOutView.classList.add("hidden");
+                loggedInView.classList.remove("hidden");
+                startRealtimeSync();
+            } else {
+                appState.user = null;
+                authSection.innerHTML = "";
+                loggedOutView.classList.remove("hidden");
+                loggedInView.classList.add("hidden");
+            }
+        });
 
-        if (!isFirebaseConfigured) {
-            // Caso en que abren la app localmente por primera vez sin configurar credenciales
-            document.getElementById("authLoading").classList.add("hidden");
-            authSection.innerHTML = `<span class="text-xs font-bold text-red-500 bg-red-50 border border-red-200 px-3 py-1.5 rounded-lg"><i class="fas fa-exclamation-circle"></i> Firebase sin configurar. Edita el archivo.</span>`;
-            loggedOutView.classList.remove("hidden");
-            btnGoogleLogin.disabled = true;
-            btnGoogleLogin.classList.add("opacity-50", "cursor-not-allowed");
-            btnGoogleLogin.innerHTML = `<i class="fas fa-lock"></i> Llaves de Firebase Requeridas`;
-        } else {
-            // Detectar estado de autenticación de Firebase Auth
-onAuthStateChanged(auth, (user) => {
-    // Corrección: Solo oculta el cargador si realmente existe en la pantalla
-    const loader = document.getElementById("authLoading");
-    if (loader) {
-        loader.classList.add("hidden");
-    }
-    
-    if (user) {
-        appState.user = user;
-        renderUserProfile(user);
-        loggedOutView.classList.add("hidden");
-        loggedInView.classList.remove("hidden");
-        
-        // Iniciar oyentes en tiempo real desde Firestore
-        startRealtimeSync();
-    } else {
-        appState.user = null;
-        authSection.innerHTML = "";
-        loggedOutView.classList.remove("hidden");
-        loggedInView.classList.add("hidden");
-    }
-});
-
-            // Trigger Login
-            btnGoogleLogin.addEventListener("click", () => {
-                signInWithPopup(auth, googleProvider).catch(err => {
-                    alert("Error al iniciar sesión con Google: " + err.message);
-                });
-            });
-        }
+        btnGoogleLogin.addEventListener("click", () => {
+            signInWithPopup(auth, googleProvider).catch(err => alert("Error: " + err.message));
+        });
 
         function renderUserProfile(user) {
             authSection.innerHTML = `
@@ -403,380 +331,278 @@ onAuthStateChanged(auth, (user) => {
             document.getElementById("btnLogOut").addEventListener("click", () => signOut(auth));
         }
 
-        // =========================================================================
-        // SINCRONIZACIÓN EN TIEMPO REAL CON FIRESTORE
-        // =========================================================================
         function startRealtimeSync() {
-            // 1. Escuchar avances
+            // Sincronizar Estructura de Tareas
+            onSnapshot(collection(db, "tareas_sst"), (snapshot) => {
+                if (snapshot.empty) {
+                    // Sembrar datos por primera vez de forma automática
+                    sgsstTasksTemplate.forEach(async (task) => {
+                        await setDoc(doc(db, "tareas_sst", task.id), task);
+                    });
+                    return;
+                }
+                let listaTareas = [];
+                snapshot.forEach(doc => listaTareas.push(doc.data()));
+                
+                // Ordenar tareas por código de ID de forma natural
+                appState.tareas = listaTareas.sort((a,b) => a.id.localeCompare(b.id, undefined, {numeric: true}));
+                updateMetricsAndTable();
+            });
+
+            // Sincronizar Avances
             onSnapshot(collection(db, "avances_sst"), (snapshot) => {
                 let nuevosAvances = {};
-                snapshot.forEach(doc => {
-                    nuevosAvances[doc.id] = doc.data().avance;
-                });
+                snapshot.forEach(doc => nuevosAvances[doc.id] = doc.data().avance);
                 appState.avances = nuevosAvances;
                 updateMetricsAndTable();
             });
 
-            // 2. Escuchar comentarios
-            const qComentarios = query(collection(db, "comentarios_sst"), orderBy("createdAt", "asc"));
-            onSnapshot(qComentarios, (snapshot) => {
+            // Sincronizar Comentarios
+            onSnapshot(query(collection(db, "comentarios_sst"), orderBy("createdAt", "asc")), (snapshot) => {
                 let nuevosComentarios = [];
-                snapshot.forEach(doc => {
-                    nuevosComentarios.push({ id: doc.id, ...doc.data() });
-                });
+                snapshot.forEach(doc => nuevosComentarios.push({ id: doc.id, ...doc.data() }));
                 appState.comentarios = nuevosComentarios;
                 updateMetricsAndTable();
-                
-                // Si el modal está abierto, refrescar contenido interno del modal
-                if (appState.activeTaskId) {
-                    renderModalComments();
-                }
+                if (appState.activeTaskId) renderModalComments();
             });
         }
 
-        // =========================================================================
-        // LOGICA DE NEGOCIO, FILTROS Y RENDERIZADO DE TABLA
-        // =========================================================================
         function updateMetricsAndTable() {
-            const total = sgsstTasksTemplate.length;
-            let sumaAvances = 0;
-            let pendientes = 0;
+            if (appState.tareas.length === 0) return;
 
-            sgsstTasksTemplate.forEach(t => {
-                const av = appState.avances[t.id] || 0;
-                sumaAvances += av;
-                if (av < 100) pendientes++;
+            let filtered = appState.tareas.filter(task => {
+                const matchFilter = appState.filter === "Todos" || task.ciclo === appState.filter;
+                const matchSearch = task.name.toLowerCase().includes(appState.search.toLowerCase()) || task.id.toLowerCase().includes(appState.search.toLowerCase());
+                return matchFilter && matchSearch;
             });
 
-            const progGlobal = total > 0 ? Math.round(sumaAvances / total) : 0;
-            statGlobalProgress.innerText = `${progGlobal}%`;
-            statTotalTasks.innerText = total;
-            statPendingTasks.innerText = pendientes;
-
-            renderTable();
-        }
-
-        function renderTable() {
+            // Renderizar Filas de la Tabla
             tasksTableBody.innerHTML = "";
-            let matchCount = 0;
-
-            sgsstTasksTemplate.forEach(task => {
-                // Aplicar Filtro de Ciclo
-                if (appState.filter !== "Todos" && task.ciclo !== appState.filter) return;
-                
-                // Aplicar Filtro de Buscador
-                if (appState.search && !task.name.toLowerCase().includes(appState.search.toLowerCase())) return;
-
-                matchCount++;
-                const currentAvance = appState.avances[task.id] || 0;
-                
-                // Procesar metadata de comentarios de esta tarea
-                const taskComments = appState.comentarios.filter(c => c.taskId === task.id);
-                const cantComments = taskComments.length;
-                let textUltimoComment = "Sin comentarios";
-                if (cantComments > 0) {
-                    textUltimoComment = taskComments[cantComments - 1].text;
-                }
-
-                // Generar HTML de la fila
-                const tr = document.createElement("tr");
-                tr.className = "hover:bg-gray-50/70 transition-colors";
-                tr.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getCicloBadgeClass(task.ciclo)}">
-                            ${task.ciclo}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <p class="font-medium text-gray-900 text-xs sm:text-sm">${task.name}</p>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-xs text-gray-500 font-medium">${task.inicio}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-xs text-gray-500 font-medium">${task.fin}</td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-3">
-                            <input type="range" min="0" max="100" step="5" value="${currentAvance}" 
-                                   class="w-full accent-blue-900 cursor-pointer h-1.5 bg-gray-200 rounded-lg appearance-none" 
-                                   data-id="${task.id}" onchange="saveAvance(this)">
-                            <div class="w-12 text-right">
-                                <span class="text-xs font-bold ${currentAvance === 100 ? 'text-emerald-600' : 'text-gray-700'}">${currentAvance}%</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-center text-xs">
-                        <button onclick="openCommentsModal('${task.id}')" class="inline-flex items-center gap-1.5 bg-white border border-gray-300 text-gray-600 px-3 py-1.5 rounded-lg hover:border-blue-900 hover:text-blue-900 shadow-xs font-semibold transition-all cursor-pointer relative">
-                            <i class="far fa-comments text-sm"></i> Comentarios
-                            ${cantComments > 0 ? `<span class="absolute -top-2 -right-2 bg-blue-900 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold border-2 border-white">${cantComments}</span>` : ''}
-                        </button>
-                        <p class="text-[10px] text-gray-400 mt-1 max-w-[140px] truncate text-left mx-auto" title="${textUltimoComment}">Último: ${textUltimoComment}</p>
-                    </td>
-                `;
-                tasksTableBody.appendChild(tr);
-            });
-
-            if (matchCount === 0) {
+            if (filtered.length === 0) {
                 emptyState.classList.remove("hidden");
             } else {
                 emptyState.classList.add("hidden");
-            }
-        }
+                filtered.forEach(task => {
+                    const currentAvance = appState.avances[task.id] || 0;
+                    const commentCount = appState.comentarios.filter(c => c.taskId === task.id).length;
+                    
+                    let badgeColor = "bg-gray-100 text-gray-700";
+                    if (task.ciclo === "Planear") badgeColor = "bg-blue-100 text-blue-800";
+                    if (task.ciclo === "Hacer") badgeColor = "bg-emerald-100 text-emerald-800";
+                    if (task.ciclo === "Verificar") badgeColor = "bg-amber-100 text-amber-800";
+                    if (task.ciclo === "Actuar") badgeColor = "bg-purple-100 text-purple-800";
 
-        function getCicloBadgeClass(ciclo) {
-            switch(ciclo) {
-                case "Planear": return "bg-blue-50 text-blue-700 border border-blue-200";
-                case "Hacer": return "bg-amber-50 text-amber-700 border border-amber-200";
-                case "Verificar": return "bg-purple-50 text-purple-700 border border-purple-200";
-                case "Actuar": return "bg-emerald-50 text-emerald-700 border border-emerald-200";
-                default: return "bg-gray-100 text-gray-800";
-            }
-        }
-
-        // Registrar controladores globales adjuntos a funciones dinámicas en la ventana (window)
-        window.saveAvance = async function(element) {
-            const taskId = element.getAttribute("data-id");
-            const value = parseInt(element.value);
-            
-            if (!isFirebaseConfigured) return;
-            try {
-                // Guardar/Actualizar en la colección avances_sst con id igual al de la tarea
-                await setDoc(doc(db, "avances_sst", taskId), {
-                    avance: value,
-                    updatedAt: serverTimestamp(),
-                    userEmail: appState.user.email,
-                    userName: appState.user.displayName
+                    const tr = document.createElement("tr");
+                    tr.className = "hover:bg-gray-50/70 transition-colors";
+                    tr.innerHTML = `
+                        <td class="px-6 py-4 font-medium"><span class="px-2.5 py-1 rounded-full text-xs font-bold ${badgeColor}">${task.ciclo}</span></td>
+                        <td class="px-6 py-4"><p class="font-semibold text-gray-900">${task.name}</p><p class="text-xs text-gray-400 font-mono mt-0.5">ID: ${task.id}</p></td>
+                        <td class="px-6 py-4 text-xs font-medium text-gray-500">${task.inicio}</td>
+                        <td class="px-6 py-4 text-xs font-medium text-gray-500">${task.fin}</td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <select onchange="window.changeAvance('${task.id}', this.value)" class="bg-white border border-gray-300 rounded-md text-xs p-1 font-semibold focus:outline-none focus:border-blue-900">
+                                    ${[0,10,20,30,40,50,60,70,80,90,100].map(v => `<option value="${v}" ${currentAvance === v ? 'selected' : ''}>${v}%</option>`).join('')}
+                                </select>
+                                <div class="w-full bg-gray-200 rounded-full h-1.5 hidden sm:block">
+                                    <div class="bg-blue-900 h-1.5 rounded-full transition-all duration-300" style="width: ${currentAvance}%"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <div class="flex items-center justify-center gap-2">
+                                <button onclick="window.openCommentsModal('${task.id}')" class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer">
+                                    <i class="fas fa-comments"></i> <span>${commentCount}</span>
+                                </button>
+                                <button onclick="window.openEditModal('${task.id}')" class="bg-slate-100 hover:bg-slate-200 text-slate-600 p-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer" title="Editar Actividad">
+                                    <i class="fas fa-edit text-sm"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tasksTableBody.appendChild(tr);
                 });
-            } catch (err) {
-                console.error("Error al guardar avance en Firestore: ", err);
             }
+
+            // Calcular Métricas Globales
+            let totalTasks = appState.tareas.length;
+            let sumAvance = 0;
+            let pendingCount = 0;
+
+            appState.tareas.forEach(t => {
+                let av = appState.avances[t.id] || 0;
+                sumAvance += av;
+                if (av < 100) pendingCount++;
+            });
+
+            statGlobalProgress.innerText = Math.round(sumAvance / totalTasks) + "%";
+            statTotalTasks.innerText = totalTasks;
+            statPendingTasks.innerText = pendingCount;
+        }
+
+        // FUNCIONES GLOBALES CONECTADAS AL WINDOW (Para interactuar desde HTML puro)
+        window.changeAvance = async (taskId, value) => {
+            await setDoc(doc(db, "avances_sst", taskId), { avance: parseInt(value), updatedBy: appState.user.email, updatedAt: serverTimestamp() });
         };
 
-        // =========================================================================
-        // LOGICA DE REGISTRO E INTERACCIÓN DE COMENTARIOS ANIDADOS
-        // =========================================================================
-        window.openCommentsModal = function(taskId) {
-            const task = sgsstTasksTemplate.find(t => t.id === taskId);
+        window.openCommentsModal = (taskId) => {
+            const task = appState.tareas.find(t => t.id === taskId);
             if (!task) return;
-
             appState.activeTaskId = taskId;
-            appState.activeReplyParentId = null;
-            replyIndicator.classList.add("hidden");
-
             modalTaskCycle.innerText = task.ciclo;
-            modalTaskCycle.className = `text-[10px] font-bold uppercase px-2 py-0.5 rounded ${getCicloBadgeClass(task.ciclo)}`;
             modalTaskName.innerText = task.name;
-            txtNewComment.value = "";
-
             renderModalComments();
             commentsModal.classList.remove("hidden");
         };
 
-        window.closeCommentsModal = function() {
+        window.closeCommentsModal = () => {
             commentsModal.classList.add("hidden");
             appState.activeTaskId = null;
-            appState.activeReplyParentId = null;
+            cancelReplyMode();
         };
 
-        window.setReplyTo = function(commentId, authorName) {
-            appState.activeReplyParentId = commentId;
-            replyIndicatorText.innerHTML = `<i class="fas fa-reply"></i> Respondiendo al comentario de <strong>${authorName}</strong>`;
+        window.openEditModal = (taskId) => {
+            const task = appState.tareas.find(t => t.id === taskId);
+            if (!task) return;
+            appState.activeEditTaskId = taskId;
+            txtEditName.value = task.name;
+            selEditCiclo.value = task.ciclo;
+            txtEditInicio.value = task.inicio;
+            txtEditFin.value = task.fin;
+            editModal.classList.remove("hidden");
+        };
+
+        window.closeEditModal = () => {
+            editModal.classList.add("hidden");
+            appState.activeEditTaskId = null;
+        };
+
+        btnSaveEdit.addEventListener("click", async () => {
+            if (!appState.activeEditTaskId) return;
+            const updatedTask = {
+                id: appState.activeEditTaskId,
+                name: txtEditName.value.trim(),
+                ciclo: selEditCiclo.value,
+                inicio: txtEditInicio.value,
+                fin: txtEditFin.value
+            };
+            if (!updatedTask.name) return alert("El nombre no puede estar vacío.");
+            
+            await setDoc(doc(db, "tareas_sst", appState.activeEditTaskId), updatedTask, { merge: true });
+            window.closeEditModal();
+        });
+
+        function renderModalComments() {
+            const currentComments = appState.comentarios.filter(c => c.taskId === appState.activeTaskId);
+            modalCommentsBody.innerHTML = "";
+            
+            if (currentComments.length === 0) {
+                modalCommentsBody.innerHTML = `<div class="text-center py-8 text-gray-400 text-xs"><i class="fas fa-comment-slash text-3xl mb-1"></i><p>Aún no hay aclaraciones técnicas en esta actividad.</p></div>`;
+                return;
+            }
+
+            // Separar principales de respuestas hilos
+            const parents = currentComments.filter(c => !c.parentId);
+            
+            parents.forEach(p => {
+                const itemDiv = document.createElement("div");
+                itemDiv.className = "bg-white p-4 rounded-xl shadow-xs border border-gray-100 space-y-3";
+                
+                let dateStr = p.createdAt ? new Date(p.createdAt.seconds * 1000).toLocaleString() : "Guardando...";
+                
+                itemDiv.innerHTML = `
+                    <div class="flex items-start gap-2 justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-xs text-gray-800">${p.userName}</span>
+                            <span class="text-[10px] text-gray-400">${dateStr}</span>
+                        </div>
+                        <button onclick="window.setReplyMode('${p.id}', '${p.userName}')" class="text-xs font-semibold text-blue-900 hover:underline cursor-pointer"><i class="fas fa-reply"></i> Responder</button>
+                    </div>
+                    <p class="text-sm text-gray-700 bg-gray-50/50 p-2.5 rounded-lg border border-gray-100">${p.text}</p>
+                    <div class="space-y-2 pl-6 border-l-2 border-gray-100" id="replies-${p.id}"></div>
+                `;
+                modalCommentsBody.appendChild(itemDiv);
+
+                // Agregar respuestas del hijo
+                const replies = currentComments.filter(c => c.parentId === p.id);
+                const replyContainer = itemDiv.querySelector(`#replies-${p.id}`);
+                replies.forEach(r => {
+                    let rDateStr = r.createdAt ? new Date(r.createdAt.seconds * 1000).toLocaleString() : "Guardando...";
+                    const rDiv = document.createElement("div");
+                    rDiv.className = "bg-slate-50/50 p-3 rounded-lg border border-gray-100 space-y-1";
+                    rDiv.innerHTML = `
+                        <div class="flex items-center gap-2 text-[11px]">
+                            <span class="font-bold text-gray-700">${r.userName}</span>
+                            <span class="text-gray-400">${rDateStr}</span>
+                        </div>
+                        <p class="text-xs text-gray-600">${r.text}</p>
+                    `;
+                    replyContainer.appendChild(rDiv);
+                });
+            });
+        }
+
+        window.setReplyMode = (parentId, userName) => {
+            appState.activeReplyParentId = parentId;
+            replyIndicatorText.innerHTML = `<i class="fas fa-reply"></i> Respondiendo a <strong>${userName}</strong>`;
             replyIndicator.classList.remove("hidden");
             txtNewComment.focus();
         };
 
-        window.cancelReplyMode = function() {
+        window.cancelReplyMode = () => {
             appState.activeReplyParentId = null;
             replyIndicator.classList.add("hidden");
         };
 
-        function renderModalComments() {
-            modalCommentsBody.innerHTML = "";
-            // Filtrar todos los comentarios vinculados a esta tarea
-            const currentComments = appState.comentarios.filter(c => c.taskId === appState.activeTaskId);
-
-            if (currentComments.length === 0) {
-                modalCommentsBody.innerHTML = `
-                    <div class="text-center py-8 text-gray-400">
-                        <i class="far fa-comment-dots text-3xl mb-1"></i>
-                        <p class="text-xs">No hay aclaraciones en este estándar corporativo. Sé el primero.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            // Separar raíces de respuestas hilos anidados de un nivel
-            const rootComments = currentComments.filter(c => !c.parentId);
-
-            rootComments.forEach(root => {
-                const replies = currentComments.filter(c => c.parentId === root.id);
-                
-                // Construir bloque de respuestas
-                let subCommentsHtml = "";
-                replies.forEach(reply => {
-                    const rDate = reply.createdAt?.seconds ? new Date(reply.createdAt.seconds * 1000).toLocaleString() : "Reciente...";
-                    subCommentsHtml += `
-                        <div class="bg-gray-100/80 p-3 rounded-lg border-l-2 border-blue-900 mt-2 text-xs">
-                            <div class="flex items-center gap-1.5 mb-1">
-                                <img src="${reply.userAvatar || 'https://via.placeholder.com/30'}" class="w-5 h-5 rounded-full object-cover">
-                                <span class="font-bold text-gray-800">${reply.userName}</span>
-                                <span class="text-[10px] text-gray-400 font-medium">${rDate}</span>
-                            </div>
-                            <p class="text-gray-700">${reply.text}</p>
-                        </div>
-                    `;
-                });
-
-                // Caja del comentario principal
-                const commentBox = document.createElement("div");
-                commentBox.className = "bg-white p-4 rounded-xl shadow-xs border border-gray-200";
-                const rootDate = root.createdAt?.seconds ? new Date(root.createdAt.seconds * 1000).toLocaleString() : "Reciente...";
-                
-                commentBox.innerHTML = `
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <img src="${root.userAvatar || 'https://via.placeholder.com/30'}" class="w-6 h-6 rounded-full object-cover">
-                            <div>
-                                <span class="font-bold text-gray-800 text-xs">${root.userName}</span>
-                                <span class="text-[9px] text-gray-400 block -mt-0.5">${rootDate}</span>
-                            </div>
-                        </div>
-                        <button onclick="setReplyTo('${root.id}', '${root.userName}')" class="text-[11px] text-blue-900 hover:underline font-bold flex items-center gap-1 cursor-pointer">
-                            <i class="fas fa-reply"></i> Responder
-                        </button>
-                    </div>
-                    <p class="text-gray-700 text-sm mt-2 pl-1">${root.text}</p>
-                    
-                    <div class="pl-4 space-y-1">
-                        ${subCommentsHtml}
-                    </div>
-                `;
-                modalCommentsBody.appendChild(commentBox);
-            });
-        }
-
         btnSendComment.addEventListener("click", async () => {
-            const text = txtNewComment.value.trim();
-            if (!text) return;
-            if (!isFirebaseConfigured) return;
+            const txt = txtNewComment.value.trim();
+            if (!txt) return;
 
-            try {
-                const commentPayload = {
-                    taskId: appState.activeTaskId,
-                    parentId: appState.activeReplyParentId, // null si es principal, id del padre si es respuesta
-                    text: text,
-                    userName: appState.user.displayName,
-                    userEmail: appState.user.email,
-                    userAvatar: appState.user.photoURL,
-                    createdAt: serverTimestamp()
-                };
+            const newComment = {
+                taskId: appState.activeTaskId,
+                parentId: appState.activeReplyParentId || null,
+                userId: appState.user.uid,
+                userName: appState.user.displayName,
+                text: txt,
+                createdAt: serverTimestamp()
+            };
 
-                await addDoc(collection(db, "comentarios_sst"), commentPayload);
-                txtNewComment.value = "";
-                cancelReplyMode();
-            } catch (err) {
-                console.error("Error al guardar el comentario: ", err);
-            }
+            txtNewComment.value = "";
+            window.cancelReplyMode();
+            const docRef = doc(collection(db, "comentarios_sst"));
+            await setDoc(docRef, newComment);
         });
 
-        // =========================================================================
-        // DESCARGA DE INFORME SEMANAL EN FORMATO CSV
-        // =========================================================================
+        // FILTROS Y BÚSQUEDA
+        filterContainer.addEventListener("click", (e) => {
+            const btn = e.target.closest(".filter-btn");
+            if (!btn) return;
+            document.querySelectorAll(".filter-btn").forEach(b => b.className = "filter-btn px-4 py-2 text-sm font-semibold rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors cursor-pointer");
+            btn.className = "filter-btn px-4 py-2 text-sm font-semibold rounded-lg bg-brand-blue text-white shadow-xs transition-colors cursor-pointer";
+            appState.filter = btn.dataset.filter;
+            updateMetricsAndTable();
+        });
+
+        txtSearch.addEventListener("input", (e) => {
+            appState.search = e.target.value;
+            updateMetricsAndTable();
+        });
+
+        // DESCARGA DE INFORME EN EXCEL / CSV
         btnDownloadCSV.addEventListener("click", () => {
-            // Calcular el rango de la semana actual (Lunes a Domingo) en base al contexto de ejecución 2026
-            const today = new Date();
-            const dayOfWeek = today.getDay(); // 0 es Domingo, 1 es Lunes...
-            const distanceToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-            
-            const startOfWeek = new Date(today);
-            startOfWeek.setDate(today.getDate() + distanceToMonday);
-            startOfWeek.setHours(0,0,0,0);
-
-            const endOfWeek = new Date(startOfWeek);
-            endOfWeek.setDate(startOfWeek.getDate() + 6);
-            endOfWeek.setHours(23,59,59,999);
-
-            // Filtrar tareas cuya fecha de Inicio o de Fin se cruce con la semana corriente
-            const weeklyTasks = sgsstTasksTemplate.filter(task => {
-                const taskStart = new Date(task.inicio + "T00:00:00");
-                const taskEnd = new Date(task.fin + "T23:59:59");
-                return (taskStart >= startOfWeek && taskStart <= endOfWeek) || (taskEnd >= startOfWeek && taskEnd <= endOfWeek);
+            let csvContent = "\uFEFFID;Ciclo;Actividad;Fecha Inicio;Fecha Fin;Avance (%)\n";
+            appState.tareas.forEach(t => {
+                let av = appState.avances[t.id] || 0;
+                csvContent += `"${t.id}";"${t.ciclo}";"${t.name}";"${t.inicio}";"${t.fin}";"${av}%"\n`;
             });
-
-            if (weeklyTasks.length === 0) {
-                alert("No existen actividades programadas con fechas de inicio o fin dentro de esta semana actual.");
-                return;
-            }
-
-            // Construcción manual del CSV con codificación correcta para caracteres en español (UTF-8)
-            let csvContent = "\uFEFF"; // BOM para asegurar compatibilidad de tildes y caracteres especiales en Excel
-            csvContent += "Ciclo;Tarea / Estandar Minimo;Fecha Inicio;Fecha Fin;Avance (%);Cantidad Comentarios;Ultimo Comentario\n";
-
-            weeklyTasks.forEach(task => {
-                const avance = appState.avances[task.id] || 0;
-                const taskComments = appState.comentarios.filter(c => c.taskId === task.id);
-                const cantComments = taskComments.length;
-                let lastComment = cantComments > 0 ? taskComments[cantComments - 1].text : "Sin comentarios";
-                
-                // Sanitizar textos para evitar romper la estructura delimitadora del archivo CSV (.csv usando punto y coma)
-                const safeName = task.name.replace(/;/g, ",").replace(/\n/g, " ");
-                const safeLastComment = lastComment.replace(/;/g, ",").replace(/\n/g, " ");
-
-                csvContent += `${task.ciclo};"${safeName}";${task.inicio};${task.fin};${avance}%;${cantComments};"${safeLastComment}"\n`;
-            });
-
-            // Descarga automática en navegador Web
             const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-            const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
-            
-            // Formatear nombre del archivo de salida descriptivo
-            const dateStr = today.toISOString().split('T')[0];
-            link.setAttribute("href", url);
-            link.setAttribute("download", `Informe_Semanal_SST_TECNOPROYECTOS_${dateStr}.csv`);
-            link.style.visibility = 'hidden';
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute("download", "Informe_Semanal_SST_TECNOPROYECTOS.csv");
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         });
-
-        // =========================================================================
-        // MANIPULACIÓN DE FILTROS Y EVENTOS BÁSICOS DE INTERFAZ DE USUARIO
-        // =========================================================================
-        
-        // Manejador del Input de Búsqueda
-        txtSearch.addEventListener("input", (e) => {
-            appState.search = e.target.value;
-            renderTable();
-        });
-
-        // Manejador de los botones de filtrado por Ciclos (PHVA)
-        filterContainer.addEventListener("click", (e) => {
-            const button = e.target.closest(".filter-btn");
-            if (!button) return;
-
-            // Cambiar estilos activos
-            document.querySelectorAll(".filter-btn").forEach(btn => {
-                btn.className = "filter-btn px-4 py-2 text-sm font-semibold rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors cursor-pointer";
-            });
-            button.className = "filter-btn px-4 py-2 text-sm font-semibold rounded-lg bg-brand-blue text-white shadow-xs transition-colors cursor-pointer";
-
-            appState.filter = button.getAttribute("data-filter");
-            renderTable();
-        });
-
-        // Acordeón de Instrucciones Técnico-Organizacionales
-        window.toggleInstructions = function() {
-            const panel = document.getElementById("instructionsPanel");
-            const chevron = document.getElementById("instructionChevron");
-            if (panel.classList.contains("hidden")) {
-                panel.classList.remove("hidden");
-                chevron.classList.add("rotate-180");
-            } else {
-                panel.classList.add("hidden");
-                chevron.classList.remove("rotate-180");
-            }
-        };
-
-        // Renderizado inicial preventivo de contingencia
-        updateMetricsAndTable();
     </script>
 </body>
 </html>
