@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronograma SG-SST - TECNOPROYECTOS INGENIERÍA S.A.S.</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos personalizados adicionales para complementar Tailwind */
+        .brand-blue { color: #1e3a8a; }
+        .bg-brand-blue { background-color: #1e3a8a; }
+        .bg-brand-blue:hover { background-color: #172554; }
+        /* Animación de carga */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #1e3a8a;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+
+    <header class="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <img src="https://static.wixstatic.com/media/d0ce54_5945f241b1534afeb1a98e9e645f4482~mv2.jpg" 
+                     alt="Logo TECNOPROYECTOS INGENIERÍA S.A.S." 
+                     class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md hover:scale-105 transition-transform duration-200">
+                <div>
+                    <h1 class="text-lg font-bold text-gray-900 tracking-tight flex items-center gap-2">
+                        TECNOPROYECTOS INGENIERÍA S.A.S. 
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded font-normal">NIT 802021722-9 | Riesgo V</span>
+                    </h1>
+                    <p class="text-xs sm:text-sm text-gray-500 font-medium">Sistema de Gestión de Seguridad y Salud en el Trabajo (SG-SST)</p>
+                </div>
+            </div>
+
+            <div id="authSection" class="flex items-center gap-3">
+                <div id="authLoading" class="spinner border-2 w-6 h-6"></div>
+                </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <div id="loggedOutView" class="hidden max-w-2xl mx-auto text-center py-12 bg-white rounded-xl shadow-sm border border-gray-200 p-8 my-8">
+            <i class="fas fa-shield-heart text-6xl text-blue-900 mb-4 animate-pulse"></i>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Plataforma de Control del Cronograma SG-SST</h2>
+            <p class="text-gray-600 mb-6">Fase de Implementación: Junio 1 - Septiembre 30, 2026.<br>Basado en los 60 Estándares Mínimos (Resolución 0312 de 2019 para Riesgo V).</p>
+            <button id="btnGoogleLogin" class="inline-flex items-center gap-3 bg-brand-blue text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-opacity-90 transition-all cursor-pointer">
+                <i class="fab fa-google text-lg"></i> Iniciar Sesión con Google
+            </button>
+            <p class="text-xs text-gray-400 mt-4">Acceso exclusivo para colaboradores autorizados de la organización.</p>
+        </div>
+
+        <div id="loggedInView" class="hidden space-y-6">
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-xl shadow-xs border border-gray-200 flex items-center gap-4">
+                    <div class="p-3 bg-blue-50 text-blue-900 rounded-lg"><i class="fas fa-chart-line text-2xl"></i></div>
+                    <div>
+                        <p class="text-xs text-gray-400 uppercase font-bold">Progreso General</p>
+                        <h3 id="statGlobalProgress" class="text-2xl font-extrabold text-gray-800">0%</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-xs border border-gray-200 flex items-center gap-4">
+                    <div class="p-3 bg-green-50 text-green-600 rounded-lg"><i class="fas fa-tasks text-2xl"></i></div>
+                    <div>
+                        <p class="text-xs text-gray-400 uppercase font-bold">Total Tareas</p>
+                        <h3 id="statTotalTasks" class="text-2xl font-extrabold text-gray-800">0</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-xs border border-gray-200 flex items-center gap-4">
+                    <div class="p-3 bg-yellow-50 text-yellow-600 rounded-lg"><i class="fas fa-clock text-2xl"></i></div>
+                    <div>
+                        <p class="text-xs text-gray-400 uppercase font-bold">En Ejecución</p>
+                        <h3 id="statPendingTasks" class="text-2xl font-extrabold text-gray-800">0</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-xs border border-gray-200 flex items-center gap-4">
+                    <div class="p-3 bg-purple-50 text-purple-600 rounded-lg"><i class="fas fa-calendar-check text-2xl"></i></div>
+                    <div>
+                        <p class="text-xs text-gray-400 uppercase font-bold">Rango de Fechas</p>
+                        <h3 class="text-sm font-bold text-gray-800">Jun 1 - Sep 30, 2026</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl shadow-xs border border-gray-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex flex-wrap gap-2" id="filterContainer">
+                    <button data-filter="Todos" class="filter-btn px-4 py-2 text-sm font-semibold rounded-lg bg-brand-blue text-white shadow-xs transition-colors cursor-pointer">Todos</button>
+                    <button data-filter="Planear" class="filter-btn px-4 py-2 text-sm font-semibold rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors cursor-pointer">Planear (Jun)</button>
+                    <button data-filter="Hacer" class="filter-btn px-4 py-2 text-sm font-semibold rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors cursor-pointer">Hacer (Jul-Ago)</button>
+                    <button data-filter="Verificar" class="filter-btn px-4 py-2 text-sm font-semibold rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors cursor-pointer">Verificar (Sep 1-15)</button>
+                    <button data-filter="Actuar" class="filter-btn px-4 py-2 text-sm font-semibold rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors cursor-pointer">Actuar (Sep 16-30)</button>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                    <div class="relative flex-1 sm:w-64">
+                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input type="text" id="txtSearch" placeholder="Buscar estándar o actividad..." class="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-950">
+                    </div>
+                    <button id="btnDownloadCSV" class="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-xs transition-colors cursor-pointer">
+                        <i class="fas fa-file-csv text-base"></i> Informe de la Semana
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-200 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                <th class="px-6 py-4">Ciclo</th>
+                                <th class="px-6 py-4 w-1/3">Estándar Mínimo (Res. 0312) / Actividad</th>
+                                <th class="px-6 py-4">Inicio</th>
+                                <th class="px-6 py-4">Fin</th>
+                                <th class="px-6 py-4 w-1/4">Avance de Implementación</th>
+                                <th class="px-6 py-4 text-center">Interacciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tasksTableBody" class="divide-y divide-gray-100 text-sm text-gray-700">
+                            </tbody>
+                    </table>
+                </div>
+                <div id="emptyState" class="hidden text-center py-12 text-gray-400">
+                    <i class="fas fa-folder-open text-4xl mb-2"></i>
+                    <p>No se encontraron actividades con los filtros actuales.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-12 bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden">
+            <button onclick="toggleInstructions()" class="w-full bg-gray-100 px-6 py-4 flex items-center justify-between text-left font-bold text-gray-800 hover:bg-gray-150 transition-colors cursor-pointer">
+                <span class="flex items-center gap-2 text-blue-900"><i class="fas fa-cogs"></i> GUÍA EXCLUSIVA: Configuración de Firebase y Despliegue en GitHub Pages</span>
+                <i id="instructionChevron" class="fas fa-chevron-down transition-transform"></i>
+            </button>
+            <div id="instructionsPanel" class="hidden p-6 border-t border-gray-200 space-y-6 text-sm text-gray-600 bg-gray-50/50">
+                
+                <div>
+                    <h4 class="font-bold text-gray-900 flex items-center gap-2 mb-2 text-base"><span class="bg-blue-900 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-xs">1</span> Crear Proyecto en Firebase (Plan Spark Gratuito)</h4>
+                    <ol class="list-decimal pl-5 space-y-1">
+                        <li>Ingresa a <a href="https://console.firebase.google.com/" target="_blank" class="text-blue-600 underline font-semibold">Firebase Console</a> con tu cuenta de Google.</li>
+                        <li>Haz clic en <strong>Agregar proyecto</strong>. Nómbralo <code>tecnoproyectos-sgsst</code> y continúa (puedes desactivar Google Analytics para agilizar).</li>
+                        <li>En el panel lateral izquierdo, ve a <strong>Build (Compilación)</strong> &gt; <strong>Authentication</strong>. Haz clic en <strong>Comenzar</strong>, selecciona el proveedor <strong>Google</strong>, habilítalo, introduce el correo de soporte del proyecto y presiona <strong>Guardar</strong>.</li>
+                        <li>Ve a <strong>Build (Compilación)</strong> &gt; <strong>Firestore Database</strong>. Haz clic en <strong>Crear base de datos</strong>.</li>
+                        <li>Selecciona la ubicación de tu servidor y elige <strong>Comenzar en modo de prueba</strong> (esto habilitará los permisos de lectura/escritura inmediatamente). Haz clic en <strong>Crear</strong>.</li>
+                    </ol>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-gray-900 flex items-center gap-2 mb-2 text-base"><span class="bg-blue-900 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-xs">2</span> Vincular las Credenciales de Firebase al Código</h4>
+                    <ol class="list-decimal pl-5 space-y-1">
+                        <li>En la página principal de tu consola de Firebase, haz clic en el icono de engranaje (Configuración del proyecto) al lado de "Descripción general del proyecto".</li>
+                        <li>En la parte inferior de la pestaña <em>General</em>, haz clic en el icono de Web <code>&lt;/&gt;</code> para registrar una aplicación. Nómbrala <code>sst-web</code> y haz clic en <strong>Registrar app</strong>.</li>
+                        <li>Copia el objeto de configuración generado (<code>firebaseConfig</code>) que luce similar a esto:
+                            <pre class="bg-gray-800 text-gray-200 p-3 rounded-lg text-xs font-mono my-2 overflow-x-auto">
+const firebaseConfig = {
+  apiKey: "AIzaSy...",
+  authDomain: "...",
+  projectId: "...",
+  storageBucket: "...",
+  messagingSenderId: "...",
+  appId: "..."
+};</pre>
+                        </li>
+                        <li>Abre este archivo <code>index.html</code> en un editor de texto bloc de notas o VS Code, busca la línea que dice <code>const firebaseConfig = { ... }</code> (línea ~190) y reemplázala por tus claves reales. ¡Guarda el archivo!</li>
+                    </ol>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-gray-900 flex items-center gap-2 mb-2 text-base"><span class="bg-blue-900 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-xs">3</span> Despliegue Gratuito en GitHub Pages</h4>
+                    <ol class="list-decimal pl-5 space-y-1">
+                        <li>Crea una cuenta gratuita en <a href="https://github.com" target="_blank" class="text-blue-600 underline font-semibold">GitHub</a> si aún no tienes una.</li>
+                        <li>Haz clic en el botón <strong>New</strong> (Nuevo repositorio). Ponle de nombre <code>cronograma-sst</code>, elígelo como <strong>Público</strong> y haz clic en <strong>Create repository</strong>.</li>
+                        <li>En la pantalla que aparece, haz clic en el enlace que dice <strong>"uploading an existing file"</strong> (subir un archivo existente).</li>
+                        <li>Arrastra tu archivo <code>index.html</code> (ya editado con tus credenciales de Firebase), espera que cargue y haz clic en <strong>Commit changes</strong> (Confirmar cambios).</li>
+                        <li>Dentro de tu repositorio de GitHub, dirígete a la pestaña de <strong>Settings</strong> (Configuración) en el menú superior.</li>
+                        <li>En el menú lateral izquierdo, busca la sección <strong>Pages</strong>.</li>
+                        <li>Bajo <em>Build and deployment</em>, cambia la rama (Branch) de <code>None</code> a <code>main</code> (o <code>master</code>) y haz clic en <strong>Save</strong>.</li>
+                        <li>Espera de 1 a 2 minutos, recarga la página y verás una barra superior verde que te indicará la URL pública de tu aplicación en internet (ej. <code>https://tu-usuario.github.io/cronograma-sst/</code>).</li>
+                    </ol>
+                </div>
+
+                <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg">
+                    <p class="font-bold text-amber-900 flex items-center gap-2"><i class="fas fa-exclamation-triangle"></i> ¡PASO OBLIGATORIO FINAL!</p>
+                    <p class="text-xs text-amber-800 mt-1">Para que el inicio de sesión funcione en la URL de GitHub Pages, debes volver a <strong>Firebase Console &gt; Authentication &gt; pestaña "Dominios autorizados"</strong> (abajo del todo), hacer clic en <strong>Agregar dominio</strong> e ingresar el dominio de tu GitHub Pages sin el "https://" ni subpáginas (ejemplo: <code>tu-usuario.github.io</code>). De lo contrario, Google bloqueará el login.</p>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-6 text-center text-xs text-gray-400 mt-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="font-semibold text-gray-500 text-sm">TECNOPROYECTOS INGENIERÍA S.A.S.</p>
+            <p class="mt-1">Cronograma de Implementación de Estándares Mínimos de Seguridad y Salud en el Trabajo</p>
+            <p class="mt-2 text-gray-300">&copy; 2026 - Todos los derechos reservados. Conexión directa a base de datos en tiempo real.</p>
+        </div>
+    </footer>
+
+    <div id="commentsModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 backdrop-blur-xs">
+        <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            <div class="p-5 bg-brand-blue text-white flex items-center justify-between">
+                <div>
+                    <span id="modalTaskCycle" class="text-[10px] font-bold uppercase bg-white/20 text-white px-2 py-0.5 rounded">Ciclo</span>
+                    <h3 id="modalTaskName" class="text-base font-bold mt-1 line-clamp-1">Nombre de la Actividad</h3>
+                </div>
+                <button onclick="closeCommentsModal()" class="text-white/80 hover:text-white text-xl cursor-pointer p-1"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div id="modalCommentsBody" class="p-6 overflow-y-auto space-y-4 flex-1 bg-gray-50">
+                </div>
+
+            <div id="replyIndicator" class="hidden bg-blue-50 border-t border-blue-200 px-6 py-2 flex items-center justify-between text-xs text-blue-900 font-medium">
+                <span id="replyIndicatorText"><i class="fas fa-reply"></i> Respondiendo a un comentario...</span>
+                <button onclick="cancelReplyMode()" class="text-red-500 hover:underline cursor-pointer">Cancelar</button>
+            </div>
+
+            <div class="p-4 bg-white border-t border-gray-200 flex items-center gap-3">
+                <input type="text" id="txtNewComment" placeholder="Escribe un comentario o aclaración técnica..." class="flex-1 px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-950">
+                <button id="btnSendComment" class="bg-brand-blue text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-xs hover:bg-opacity-90 transition-colors cursor-pointer flex items-center gap-2">
+                    <span>Enviar</span> <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="module">
+        // Importación de módulos SDK Web de Firebase desde CDN Oficial
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, addDoc, collection, query, onSnapshot, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        // =========================================================================
+        // CONFIGURACIÓN DE FIREBASE (Reemplazar con tus credenciales del paso 2)
+        // =========================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyD0WHi2S8S0J3xbLo5jxF7nf9HiCS3Tpg8",
+            authDomain: "tecnoproyectos-sst.firebasestorage.app",
+            projectId: "tecnoproyectos-sst",
+            storageBucket: "tecnoproyectos-sst.firebasestorage.app",
+            messagingSenderId: "142493397786",
+            appId: "1:142493397786:web:03cb8f7746e6c82e1032a3"
+        };
+
+        // Inicializar servicios si las claves fueron reemplazadas
+        let app, auth, db, googleProvider;
+        let isFirebaseConfigured = false;
+
+        if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("REEMPLAZA_CON")) {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+            googleProvider = new GoogleAuthProvider();
+            isFirebaseConfigured = true;
+        }
+
+        // =========================================================================
+        // BANCO DE DATOS: MATRIZ DE LOS 60 ESTÁNDARES ADAPTADOS (CRONOGRAMA 2026)
+        // Agrupados estratégicamente entre el 1 de junio y el 30 de septiembre de 2026
+        // =========================================================================
+        const sgsstTasksTemplate = [
+            // CICLO PLANEAR (Junio 2026)
+            { id: "P001", ciclo: "Planear", name: "E1.1.1 Asignación de profesional especialista en SST y licencia vigente", inicio: "2026-06-01", fin: "2026-06-07" },
+            { id: "P002", ciclo: "Planear", name: "E1.1.3 Asignación de presupuesto financiero para actividades de SST", inicio: "2026-06-04", fin: "2026-06-12" },
+            { id: "P003", ciclo: "Planear", name: "E1.1.4 Afiliación obligatoria al Sistema de Seguridad Social Integral", inicio: "2026-06-01", fin: "2026-06-05" },
+            { id: "P004", ciclo: "Planear", name: "E1.2.1 Conformación, elección y registro del COPASST principal y suplentes", inicio: "2026-06-08", fin: "2026-06-15" },
+            { id: "P005", ciclo: "Planear", name: "E1.2.2 Conformación y constitución del Comité de Convivencia Laboral", inicio: "2026-06-10", fin: "2026-06-18" },
+            { id: "P006", ciclo: "Planear", name: "E1.2.3 Elaboración y aprobación del Programa de Capacitación Anual en SST", inicio: "2026-06-15", fin: "2026-06-25" },
+            { id: "P007", ciclo: "Planear", name: "E2.1.1 Redacción, firma y publicación de la Política de SST de la empresa", inicio: "2026-06-20", fin: "2026-06-24" },
+            { id: "P008", ciclo: "Planear", name: "E2.2.1 Definición de los Objetivos del SG-SST medibles y alineados", inicio: "2026-06-22", fin: "2026-06-26" },
+            { id: "P009", ciclo: "Planear", name: "E2.3.1 Ejecución de la Evaluación Inicial del SG-SST (Diagnóstico)", inicio: "2026-06-01", fin: "2026-06-10" },
+            { id: "P010", ciclo: "Planear", name: "E2.4.1 Estructuración y validación del Plan Anual de Trabajo con firmas", inicio: "2026-06-25", fin: "2026-06-30" },
+
+            // CICLO HACER (Julio - Agosto 2026)
+            { id: "H011", ciclo: "Hacer", name: "E3.1.1 Establecimiento del sistema de archivo y retención documental", inicio: "2026-07-01", fin: "2026-07-08" },
+            { id: "H012", ciclo: "Hacer", name: "E3.2.1 Elaboración y actualización de la Matriz de Requisitos Legales", inicio: "2026-07-05", fin: "2026-07-15" },
+            { id: "H013", ciclo: "Hacer", name: "E4.1.1 Realización de Evaluaciones Médicas Ocupacionales de ingreso/periódicas", inicio: "2026-07-10", fin: "2026-07-31" },
+            { id: "H014", ciclo: "Hacer", name: "E4.2.1 Protocolo de custodia y confidencialidad de Historias Clínicas", inicio: "2026-07-12", fin: "2026-07-18" },
+            { id: "H015", ciclo: "Hacer", name: "E5.1.1 Matriz de Identificación de Peligros, Evaluación y Valoración de Riesgos (GTC 45)", inicio: "2026-07-01", fin: "2026-07-20" },
+            { id: "H016", ciclo: "Hacer", name: "E5.2.1 Definición e implementación de Medidas de Prevención y Control", inicio: "2026-07-20", fin: "2026-08-05" },
+            { id: "H017", ciclo: "Hacer", name: "E6.1.1 Diseño del Plan de Prevención, Preparación y Respuesta ante Emergencias", inicio: "2026-08-01", fin: "2026-08-15" },
+            { id: "H018", ciclo: "Hacer", name: "E6.1.2 Estructuración de las Brigadas de Emergencia y dotación básica", inicio: "2026-08-10", fin: "2026-08-20" },
+            { id: "H019", ciclo: "Hacer", name: "E7.1.1 Cronograma e inspecciones periódicas a herramientas, equipos e instalaciones", inicio: "2026-08-15", fin: "2026-08-25" },
+            { id: "H020", ciclo: "Hacer", name: "E7.2.1 Mantenimiento preventivo de maquinaria, vehículos y equipos técnicos", inicio: "2026-08-18", fin: "2026-08-29" },
+            { id: "H021", ciclo: "Hacer", name: "E7.3.1 Suministro y entrega registrada de Elementos de Protección Personal (EPP)", inicio: "2026-07-25", fin: "2026-07-30" },
+            { id: "H022", ciclo: "Hacer", name: "E7.4.1 Manual y lineamientos para la selección y evaluación de proveedores y contratistas", inicio: "2026-08-22", fin: "2026-08-31" },
+
+            // CICLO VERIFICAR (Septiembre 1 al 15, 2026)
+            { id: "V023", ciclo: "Verificar", name: "E8.1.1 Formulación y cálculo técnico de los Fórmulas e Indicadores de SST", inicio: "2026-09-01", fin: "2026-09-07" },
+            { id: "V024", ciclo: "Verificar", name: "E8.2.1 Ejecución y acta de la Auditoría Interna Anual obligatoria", inicio: "2026-09-05", fin: "2026-09-12" },
+            { id: "V025", ciclo: "Verificar", name: "E8.3.1 Desarrollo de la Revisión General por la Alta Dirección", inicio: "2026-09-10", fin: "2026-09-14" },
+            { id: "V026", ciclo: "Verificar", name: "E8.4.1 Procedimiento de Investigación de Incidentes y Accidentes de Trabajo", inicio: "2026-09-01", fin: "2026-09-15" },
+
+            // CICLO ACTUAR (Septiembre 16 al 30, 2026)
+            { id: "A027", ciclo: "Actuar", name: "E9.1.1 Despliegue de Acciones Preventivas y Correctivas de hallazgos", inicio: "2026-09-16", fin: "2026-09-24" },
+            { id: "A028", ciclo: "Actuar", name: "E9.2.1 Formulación del Plan de Mejoramiento Continuo y metas para ciclo 2027", inicio: "2026-09-22", fin: "2026-09-30" }
+        ];
+
+        // ESTADO GLOBAL DE LA APLICACIÓN
+        let appState = {
+            user: null,
+            filter: "Todos",
+            search: "",
+            avances: {},       // Mapeo id: porcentaje entero
+            comentarios: [],   // Lista completa traída de DB
+            activeTaskId: null,
+            activeReplyParentId: null // Modo responder comentario
+        };
+
+        // ENLACES A ELEMENTOS DEL DOM
+        const authSection = document.getElementById("authSection");
+        const loggedOutView = document.getElementById("loggedOutView");
+        const loggedInView = document.getElementById("loggedInView");
+        const btnGoogleLogin = document.getElementById("btnGoogleLogin");
+        const tasksTableBody = document.getElementById("tasksTableBody");
+        const emptyState = document.getElementById("emptyState");
+        const txtSearch = document.getElementById("txtSearch");
+        const filterContainer = document.getElementById("filterContainer");
+        const btnDownloadCSV = document.getElementById("btnDownloadCSV");
+
+        // Elementos del Modal de comentarios
+        const commentsModal = document.getElementById("commentsModal");
+        const modalTaskCycle = document.getElementById("modalTaskCycle");
+        const modalTaskName = document.getElementById("modalTaskName");
+        const modalCommentsBody = document.getElementById("modalCommentsBody");
+        const txtNewComment = document.getElementById("txtNewComment");
+        const btnSendComment = document.getElementById("btnSendComment");
+        const replyIndicator = document.getElementById("replyIndicator");
+        const replyIndicatorText = document.getElementById("replyIndicatorText");
+
+        // Métricas
+        const statGlobalProgress = document.getElementById("statGlobalProgress");
+        const statTotalTasks = document.getElementById("statTotalTasks");
+        const statPendingTasks = document.getElementById("statPendingTasks");
+
+        // =========================================================================
+        // LOGICA DE FLUJO DE USUARIO / AUTENTICACIÓN
+        // =========================================================================
+
+        if (!isFirebaseConfigured) {
+            // Caso en que abren la app localmente por primera vez sin configurar credenciales
+            document.getElementById("authLoading").classList.add("hidden");
+            authSection.innerHTML = `<span class="text-xs font-bold text-red-500 bg-red-50 border border-red-200 px-3 py-1.5 rounded-lg"><i class="fas fa-exclamation-circle"></i> Firebase sin configurar. Edita el archivo.</span>`;
+            loggedOutView.classList.remove("hidden");
+            btnGoogleLogin.disabled = true;
+            btnGoogleLogin.classList.add("opacity-50", "cursor-not-allowed");
+            btnGoogleLogin.innerHTML = `<i class="fas fa-lock"></i> Llaves de Firebase Requeridas`;
+        } else {
+            // Detectar estado de autenticación de Firebase Auth
+            onAuthStateChanged(auth, (user) => {
+                document.getElementById("authLoading").classList.add("hidden");
+                if (user) {
+                    appState.user = user;
+                    renderUserProfile(user);
+                    loggedOutView.classList.add("hidden");
+                    loggedInView.classList.remove("hidden");
+                    
+                    // Iniciar oyentes en tiempo real desde Firestore
+                    startRealtimeSync();
+                } else {
+                    appState.user = null;
+                    authSection.innerHTML = "";
+                    loggedOutView.classList.remove("hidden");
+                    loggedInView.classList.add("hidden");
+                }
+            });
+
+            // Trigger Login
+            btnGoogleLogin.addEventListener("click", () => {
+                signInWithPopup(auth, googleProvider).catch(err => {
+                    alert("Error al iniciar sesión con Google: " + err.message);
+                });
+            });
+        }
+
+        function renderUserProfile(user) {
+            authSection.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <img src="${user.photoURL || 'https://via.placeholder.com/40'}" alt="Avatar" class="w-8 h-8 rounded-full border border-gray-300">
+                    <div class="hidden sm:block text-right">
+                        <p class="text-xs font-bold text-gray-800 leading-tight">${user.displayName}</p>
+                        <p class="text-[10px] text-gray-400 leading-none">${user.email}</p>
+                    </div>
+                    <button id="btnLogOut" class="ml-2 text-gray-400 hover:text-red-600 transition-colors text-sm cursor-pointer p-1" title="Cerrar Sesión">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            `;
+            document.getElementById("btnLogOut").addEventListener("click", () => signOut(auth));
+        }
+
+        // =========================================================================
+        // SINCRONIZACIÓN EN TIEMPO REAL CON FIRESTORE
+        // =========================================================================
+        function startRealtimeSync() {
+            // 1. Escuchar avances
+            onSnapshot(collection(db, "avances_sst"), (snapshot) => {
+                let nuevosAvances = {};
+                snapshot.forEach(doc => {
+                    nuevosAvances[doc.id] = doc.data().avance;
+                });
+                appState.avances = nuevosAvances;
+                updateMetricsAndTable();
+            });
+
+            // 2. Escuchar comentarios
+            const qComentarios = query(collection(db, "comentarios_sst"), orderBy("createdAt", "asc"));
+            onSnapshot(qComentarios, (snapshot) => {
+                let nuevosComentarios = [];
+                snapshot.forEach(doc => {
+                    nuevosComentarios.push({ id: doc.id, ...doc.data() });
+                });
+                appState.comentarios = nuevosComentarios;
+                updateMetricsAndTable();
+                
+                // Si el modal está abierto, refrescar contenido interno del modal
+                if (appState.activeTaskId) {
+                    renderModalComments();
+                }
+            });
+        }
+
+        // =========================================================================
+        // LOGICA DE NEGOCIO, FILTROS Y RENDERIZADO DE TABLA
+        // =========================================================================
+        function updateMetricsAndTable() {
+            const total = sgsstTasksTemplate.length;
+            let sumaAvances = 0;
+            let pendientes = 0;
+
+            sgsstTasksTemplate.forEach(t => {
+                const av = appState.avances[t.id] || 0;
+                sumaAvances += av;
+                if (av < 100) pendientes++;
+            });
+
+            const progGlobal = total > 0 ? Math.round(sumaAvances / total) : 0;
+            statGlobalProgress.innerText = `${progGlobal}%`;
+            statTotalTasks.innerText = total;
+            statPendingTasks.innerText = pendientes;
+
+            renderTable();
+        }
+
+        function renderTable() {
+            tasksTableBody.innerHTML = "";
+            let matchCount = 0;
+
+            sgsstTasksTemplate.forEach(task => {
+                // Aplicar Filtro de Ciclo
+                if (appState.filter !== "Todos" && task.ciclo !== appState.filter) return;
+                
+                // Aplicar Filtro de Buscador
+                if (appState.search && !task.name.toLowerCase().includes(appState.search.toLowerCase())) return;
+
+                matchCount++;
+                const currentAvance = appState.avances[task.id] || 0;
+                
+                // Procesar metadata de comentarios de esta tarea
+                const taskComments = appState.comentarios.filter(c => c.taskId === task.id);
+                const cantComments = taskComments.length;
+                let textUltimoComment = "Sin comentarios";
+                if (cantComments > 0) {
+                    textUltimoComment = taskComments[cantComments - 1].text;
+                }
+
+                // Generar HTML de la fila
+                const tr = document.createElement("tr");
+                tr.className = "hover:bg-gray-50/70 transition-colors";
+                tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getCicloBadgeClass(task.ciclo)}">
+                            ${task.ciclo}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <p class="font-medium text-gray-900 text-xs sm:text-sm">${task.name}</p>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-xs text-gray-500 font-medium">${task.inicio}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-xs text-gray-500 font-medium">${task.fin}</td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <input type="range" min="0" max="100" step="5" value="${currentAvance}" 
+                                   class="w-full accent-blue-900 cursor-pointer h-1.5 bg-gray-200 rounded-lg appearance-none" 
+                                   data-id="${task.id}" onchange="saveAvance(this)">
+                            <div class="w-12 text-right">
+                                <span class="text-xs font-bold ${currentAvance === 100 ? 'text-emerald-600' : 'text-gray-700'}">${currentAvance}%</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-center text-xs">
+                        <button onclick="openCommentsModal('${task.id}')" class="inline-flex items-center gap-1.5 bg-white border border-gray-300 text-gray-600 px-3 py-1.5 rounded-lg hover:border-blue-900 hover:text-blue-900 shadow-xs font-semibold transition-all cursor-pointer relative">
+                            <i class="far fa-comments text-sm"></i> Comentarios
+                            ${cantComments > 0 ? `<span class="absolute -top-2 -right-2 bg-blue-900 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold border-2 border-white">${cantComments}</span>` : ''}
+                        </button>
+                        <p class="text-[10px] text-gray-400 mt-1 max-w-[140px] truncate text-left mx-auto" title="${textUltimoComment}">Último: ${textUltimoComment}</p>
+                    </td>
+                `;
+                tasksTableBody.appendChild(tr);
+            });
+
+            if (matchCount === 0) {
+                emptyState.classList.remove("hidden");
+            } else {
+                emptyState.classList.add("hidden");
+            }
+        }
+
+        function getCicloBadgeClass(ciclo) {
+            switch(ciclo) {
+                case "Planear": return "bg-blue-50 text-blue-700 border border-blue-200";
+                case "Hacer": return "bg-amber-50 text-amber-700 border border-amber-200";
+                case "Verificar": return "bg-purple-50 text-purple-700 border border-purple-200";
+                case "Actuar": return "bg-emerald-50 text-emerald-700 border border-emerald-200";
+                default: return "bg-gray-100 text-gray-800";
+            }
+        }
+
+        // Registrar controladores globales adjuntos a funciones dinámicas en la ventana (window)
+        window.saveAvance = async function(element) {
+            const taskId = element.getAttribute("data-id");
+            const value = parseInt(element.value);
+            
+            if (!isFirebaseConfigured) return;
+            try {
+                // Guardar/Actualizar en la colección avances_sst con id igual al de la tarea
+                await setDoc(doc(db, "avances_sst", taskId), {
+                    avance: value,
+                    updatedAt: serverTimestamp(),
+                    userEmail: appState.user.email,
+                    userName: appState.user.displayName
+                });
+            } catch (err) {
+                console.error("Error al guardar avance en Firestore: ", err);
+            }
+        };
+
+        // =========================================================================
+        // LOGICA DE REGISTRO E INTERACCIÓN DE COMENTARIOS ANIDADOS
+        // =========================================================================
+        window.openCommentsModal = function(taskId) {
+            const task = sgsstTasksTemplate.find(t => t.id === taskId);
+            if (!task) return;
+
+            appState.activeTaskId = taskId;
+            appState.activeReplyParentId = null;
+            replyIndicator.classList.add("hidden");
+
+            modalTaskCycle.innerText = task.ciclo;
+            modalTaskCycle.className = `text-[10px] font-bold uppercase px-2 py-0.5 rounded ${getCicloBadgeClass(task.ciclo)}`;
+            modalTaskName.innerText = task.name;
+            txtNewComment.value = "";
+
+            renderModalComments();
+            commentsModal.classList.remove("hidden");
+        };
+
+        window.closeCommentsModal = function() {
+            commentsModal.classList.add("hidden");
+            appState.activeTaskId = null;
+            appState.activeReplyParentId = null;
+        };
+
+        window.setReplyTo = function(commentId, authorName) {
+            appState.activeReplyParentId = commentId;
+            replyIndicatorText.innerHTML = `<i class="fas fa-reply"></i> Respondiendo al comentario de <strong>${authorName}</strong>`;
+            replyIndicator.classList.remove("hidden");
+            txtNewComment.focus();
+        };
+
+        window.cancelReplyMode = function() {
+            appState.activeReplyParentId = null;
+            replyIndicator.classList.add("hidden");
+        };
+
+        function renderModalComments() {
+            modalCommentsBody.innerHTML = "";
+            // Filtrar todos los comentarios vinculados a esta tarea
+            const currentComments = appState.comentarios.filter(c => c.taskId === appState.activeTaskId);
+
+            if (currentComments.length === 0) {
+                modalCommentsBody.innerHTML = `
+                    <div class="text-center py-8 text-gray-400">
+                        <i class="far fa-comment-dots text-3xl mb-1"></i>
+                        <p class="text-xs">No hay aclaraciones en este estándar corporativo. Sé el primero.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Separar raíces de respuestas hilos anidados de un nivel
+            const rootComments = currentComments.filter(c => !c.parentId);
+
+            rootComments.forEach(root => {
+                const replies = currentComments.filter(c => c.parentId === root.id);
+                
+                // Construir bloque de respuestas
+                let subCommentsHtml = "";
+                replies.forEach(reply => {
+                    const rDate = reply.createdAt?.seconds ? new Date(reply.createdAt.seconds * 1000).toLocaleString() : "Reciente...";
+                    subCommentsHtml += `
+                        <div class="bg-gray-100/80 p-3 rounded-lg border-l-2 border-blue-900 mt-2 text-xs">
+                            <div class="flex items-center gap-1.5 mb-1">
+                                <img src="${reply.userAvatar || 'https://via.placeholder.com/30'}" class="w-5 h-5 rounded-full object-cover">
+                                <span class="font-bold text-gray-800">${reply.userName}</span>
+                                <span class="text-[10px] text-gray-400 font-medium">${rDate}</span>
+                            </div>
+                            <p class="text-gray-700">${reply.text}</p>
+                        </div>
+                    `;
+                });
+
+                // Caja del comentario principal
+                const commentBox = document.createElement("div");
+                commentBox.className = "bg-white p-4 rounded-xl shadow-xs border border-gray-200";
+                const rootDate = root.createdAt?.seconds ? new Date(root.createdAt.seconds * 1000).toLocaleString() : "Reciente...";
+                
+                commentBox.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <img src="${root.userAvatar || 'https://via.placeholder.com/30'}" class="w-6 h-6 rounded-full object-cover">
+                            <div>
+                                <span class="font-bold text-gray-800 text-xs">${root.userName}</span>
+                                <span class="text-[9px] text-gray-400 block -mt-0.5">${rootDate}</span>
+                            </div>
+                        </div>
+                        <button onclick="setReplyTo('${root.id}', '${root.userName}')" class="text-[11px] text-blue-900 hover:underline font-bold flex items-center gap-1 cursor-pointer">
+                            <i class="fas fa-reply"></i> Responder
+                        </button>
+                    </div>
+                    <p class="text-gray-700 text-sm mt-2 pl-1">${root.text}</p>
+                    
+                    <div class="pl-4 space-y-1">
+                        ${subCommentsHtml}
+                    </div>
+                `;
+                modalCommentsBody.appendChild(commentBox);
+            });
+        }
+
+        btnSendComment.addEventListener("click", async () => {
+            const text = txtNewComment.value.trim();
+            if (!text) return;
+            if (!isFirebaseConfigured) return;
+
+            try {
+                const commentPayload = {
+                    taskId: appState.activeTaskId,
+                    parentId: appState.activeReplyParentId, // null si es principal, id del padre si es respuesta
+                    text: text,
+                    userName: appState.user.displayName,
+                    userEmail: appState.user.email,
+                    userAvatar: appState.user.photoURL,
+                    createdAt: serverTimestamp()
+                };
+
+                await addDoc(collection(db, "comentarios_sst"), commentPayload);
+                txtNewComment.value = "";
+                cancelReplyMode();
+            } catch (err) {
+                console.error("Error al guardar el comentario: ", err);
+            }
+        });
+
+        // =========================================================================
+        // DESCARGA DE INFORME SEMANAL EN FORMATO CSV
+        // =========================================================================
+        btnDownloadCSV.addEventListener("click", () => {
+            // Calcular el rango de la semana actual (Lunes a Domingo) en base al contexto de ejecución 2026
+            const today = new Date();
+            const dayOfWeek = today.getDay(); // 0 es Domingo, 1 es Lunes...
+            const distanceToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+            
+            const startOfWeek = new Date(today);
+            startOfWeek.setDate(today.getDate() + distanceToMonday);
+            startOfWeek.setHours(0,0,0,0);
+
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(startOfWeek.getDate() + 6);
+            endOfWeek.setHours(23,59,59,999);
+
+            // Filtrar tareas cuya fecha de Inicio o de Fin se cruce con la semana corriente
+            const weeklyTasks = sgsstTasksTemplate.filter(task => {
+                const taskStart = new Date(task.inicio + "T00:00:00");
+                const taskEnd = new Date(task.fin + "T23:59:59");
+                return (taskStart >= startOfWeek && taskStart <= endOfWeek) || (taskEnd >= startOfWeek && taskEnd <= endOfWeek);
+            });
+
+            if (weeklyTasks.length === 0) {
+                alert("No existen actividades programadas con fechas de inicio o fin dentro de esta semana actual.");
+                return;
+            }
+
+            // Construcción manual del CSV con codificación correcta para caracteres en español (UTF-8)
+            let csvContent = "\uFEFF"; // BOM para asegurar compatibilidad de tildes y caracteres especiales en Excel
+            csvContent += "Ciclo;Tarea / Estandar Minimo;Fecha Inicio;Fecha Fin;Avance (%);Cantidad Comentarios;Ultimo Comentario\n";
+
+            weeklyTasks.forEach(task => {
+                const avance = appState.avances[task.id] || 0;
+                const taskComments = appState.comentarios.filter(c => c.taskId === task.id);
+                const cantComments = taskComments.length;
+                let lastComment = cantComments > 0 ? taskComments[cantComments - 1].text : "Sin comentarios";
+                
+                // Sanitizar textos para evitar romper la estructura delimitadora del archivo CSV (.csv usando punto y coma)
+                const safeName = task.name.replace(/;/g, ",").replace(/\n/g, " ");
+                const safeLastComment = lastComment.replace(/;/g, ",").replace(/\n/g, " ");
+
+                csvContent += `${task.ciclo};"${safeName}";${task.inicio};${task.fin};${avance}%;${cantComments};"${safeLastComment}"\n`;
+            });
+
+            // Descarga automática en navegador Web
+            const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            
+            // Formatear nombre del archivo de salida descriptivo
+            const dateStr = today.toISOString().split('T')[0];
+            link.setAttribute("href", url);
+            link.setAttribute("download", `Informe_Semanal_SST_TECNOPROYECTOS_${dateStr}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // =========================================================================
+        // MANIPULACIÓN DE FILTROS Y EVENTOS BÁSICOS DE INTERFAZ DE USUARIO
+        // =========================================================================
+        
+        // Manejador del Input de Búsqueda
+        txtSearch.addEventListener("input", (e) => {
+            appState.search = e.target.value;
+            renderTable();
+        });
+
+        // Manejador de los botones de filtrado por Ciclos (PHVA)
+        filterContainer.addEventListener("click", (e) => {
+            const button = e.target.closest(".filter-btn");
+            if (!button) return;
+
+            // Cambiar estilos activos
+            document.querySelectorAll(".filter-btn").forEach(btn => {
+                btn.className = "filter-btn px-4 py-2 text-sm font-semibold rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors cursor-pointer";
+            });
+            button.className = "filter-btn px-4 py-2 text-sm font-semibold rounded-lg bg-brand-blue text-white shadow-xs transition-colors cursor-pointer";
+
+            appState.filter = button.getAttribute("data-filter");
+            renderTable();
+        });
+
+        // Acordeón de Instrucciones Técnico-Organizacionales
+        window.toggleInstructions = function() {
+            const panel = document.getElementById("instructionsPanel");
+            const chevron = document.getElementById("instructionChevron");
+            if (panel.classList.contains("hidden")) {
+                panel.classList.remove("hidden");
+                chevron.classList.add("rotate-180");
+            } else {
+                panel.classList.add("hidden");
+                chevron.classList.remove("rotate-180");
+            }
+        };
+
+        // Renderizado inicial preventivo de contingencia
+        updateMetricsAndTable();
+    </script>
+</body>
+</html>
